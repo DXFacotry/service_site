@@ -254,9 +254,8 @@
 
                 <hr class="lead-divider">
 
-                <form class="lead-form" method="POST" action="https://formspree.io/f/mgodnnjo">
+                <form class="lead-form" id="diagForm">
                     <input type="hidden" name="_subject" value="【診断DL】現在地診断リクエスト">
-                    <input type="hidden" name="_next" value="https://dxfactory.jp/diagnosis.html">
                     <!-- honeypot（スパム対策） -->
                     <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 
@@ -273,8 +272,43 @@
                         <input type="email" id="diag-email" name="email" placeholder="例：info@example.com" required>
                     </div>
 
-                    <button type="submit" class="btn-lead">診断シートを受け取る（無料）→</button>
+                    <button type="submit" class="btn-lead" id="diagSubmitBtn">診断シートを受け取る（無料）→</button>
+                    <p id="diagError" style="display:none;color:#e53e3e;margin-top:8px;font-size:14px;">送信に失敗しました。しばらく経ってから再度お試しください。</p>
                 </form>
+
+                <script>
+                (function() {
+                    var form = document.getElementById('diagForm');
+                    var btn = document.getElementById('diagSubmitBtn');
+                    var errMsg = document.getElementById('diagError');
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        // honeypotチェック
+                        if (form.elements['_gotcha'] && form.elements['_gotcha'].value) return;
+                        btn.disabled = true;
+                        btn.textContent = '送信中...';
+                        errMsg.style.display = 'none';
+                        var data = new FormData(form);
+                        fetch('https://formspree.io/f/mgodnnjo', {
+                            method: 'POST',
+                            body: data,
+                            headers: { 'Accept': 'application/json' }
+                        }).then(function(res) {
+                            if (res.ok) {
+                                window.location.href = 'https://dxfactory.jp/diagnosis.html';
+                            } else {
+                                btn.disabled = false;
+                                btn.textContent = '診断シートを受け取る（無料）→';
+                                errMsg.style.display = 'block';
+                            }
+                        }).catch(function() {
+                            btn.disabled = false;
+                            btn.textContent = '診断シートを受け取る（無料）→';
+                            errMsg.style.display = 'block';
+                        });
+                    });
+                })();
+                </script>
 
                 <p class="lead-note">
                     送信後すぐに診断シートが表示されます。<br>

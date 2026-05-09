@@ -121,7 +121,17 @@ ul {
     font-size: 0.85rem;
     letter-spacing: 0.08em;
     font-weight: 800;
-    transition: background var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+    transition: background var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base), opacity 0.3s ease, visibility 0.3s ease;
+    /* スクロール前は非表示にしてHero CTAと重複させない */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.header.scrolled .btn-header {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .btn-header:hover {
@@ -1179,9 +1189,48 @@ ul {
 .hero-cta-wrap {
     margin-top: 40px;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.hero-cta-row {
+    display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 14px;
     flex-wrap: wrap;
+}
+
+/* Heroセカンダリ：診断（黄色アウトライン） */
+.btn-hero-cta-sub {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    padding: 18px 28px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border: 1.5px solid var(--c-accent);
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+.btn-hero-cta-sub:hover {
+    background: var(--c-accent);
+    color: var(--c-black);
+    transform: translateY(-2px);
+}
+
+.btn-hero-cta-sub .arrow {
+    transition: transform 0.25s ease;
+}
+
+.btn-hero-cta-sub:hover .arrow {
+    transform: translateX(4px);
 }
 
 .btn-hero-cta {
@@ -1363,6 +1412,81 @@ ul {
     background: #fff9d6;
     transform: translateY(-3px);
     box-shadow: 0 10px 36px rgba(255, 222, 89, 0.4);
+}
+
+/* CTAデュアルボタン行（プライマリ＋セカンダリ） */
+.mid-cta-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* 共通：mid系プライマリ（黄色塗り） */
+.btn-mid-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--c-accent);
+    color: var(--c-black) !important;
+    padding: 16px 36px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border: 1.5px solid var(--c-accent);
+    transition: all 0.25s ease;
+}
+
+.btn-mid-primary:hover {
+    background: #fff9d6;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(255, 222, 89, 0.4);
+}
+
+/* 共通：mid系セカンダリ（黄色アウトライン） */
+.btn-mid-sub {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--c-accent) !important;
+    padding: 16px 28px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border: 1.5px solid var(--c-accent);
+    transition: all 0.25s ease;
+}
+
+.btn-mid-sub:hover {
+    background: var(--c-accent);
+    color: var(--c-black) !important;
+    transform: translateY(-2px);
+}
+
+/* PLANSセクション末尾はライト背景なのでセカンダリの色を反転 */
+.pricing-cta-wrap .btn-mid-sub {
+    color: var(--c-black) !important;
+    border-color: var(--c-black);
+}
+
+.pricing-cta-wrap .btn-mid-sub:hover {
+    background: var(--c-black);
+    color: #fff !important;
+    border-color: var(--c-black);
+}
+
+/* PLANS末尾CTA：中央寄せ */
+.pricing-cta-wrap {
+    text-align: center;
+    margin-top: 48px;
 }
 
 /* ==============================
@@ -2933,13 +3057,15 @@ ul {
 
 @media (max-width: 768px) {
     .sticky-cta {
-        display: block;
+        display: flex;
+        gap: 8px;
+        align-items: stretch;
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
         z-index: 9999;
-        padding: 10px 16px;
+        padding: 10px 12px;
         background: rgba(0, 0, 0, 0.92);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
@@ -2953,16 +3079,19 @@ ul {
         transform: translateY(0);
     }
 
+    /* メイン：30分相談（黄色塗り） */
     .sticky-cta-btn {
-        display: block;
-        width: 100%;
-        padding: 14px 20px;
+        flex: 2 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 12px;
         background: var(--c-accent);
         color: var(--c-black);
         text-align: center;
         font-weight: 800;
-        font-size: 0.95rem;
-        letter-spacing: 0.05em;
+        font-size: 0.85rem;
+        letter-spacing: 0.02em;
         border-radius: 8px;
         text-decoration: none;
         transition: background 0.2s ease, transform 0.1s ease;
@@ -2970,6 +3099,31 @@ ul {
 
     .sticky-cta-btn:active {
         background: var(--c-accent-dark);
+        transform: scale(0.98);
+    }
+
+    /* セカンダリ：3分診断（アウトライン） */
+    .sticky-cta-sub {
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 8px;
+        background: transparent;
+        color: var(--c-accent);
+        text-align: center;
+        font-weight: 700;
+        font-size: 0.82rem;
+        letter-spacing: 0.02em;
+        border-radius: 8px;
+        text-decoration: none;
+        border: 1.5px solid var(--c-accent);
+        transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .sticky-cta-sub:active {
+        background: var(--c-accent);
+        color: var(--c-black);
         transform: scale(0.98);
     }
 }
@@ -3432,7 +3586,7 @@ button.faq-question:focus-visible {
 .stages-note {
     text-align: center;
     margin-top: 60px;
-    background: var(--c-black);
+    background: var(--c-accent);
     border-radius: 12px;
     padding: 56px 40px;
 }
@@ -3441,7 +3595,7 @@ button.faq-question:focus-visible {
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 32px;
-    color: #ffffff;
+    color: var(--c-black);
     letter-spacing: 0.04em;
 }
 
@@ -3449,8 +3603,8 @@ button.faq-question:focus-visible {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--c-accent);
-    color: var(--c-black);
+    background: var(--c-black);
+    color: #fff;
     padding: 18px 48px;
     border-radius: 6px;
     font-weight: 800;
@@ -3460,9 +3614,9 @@ button.faq-question:focus-visible {
 }
 
 .stages-note .btn-mid:hover {
-    background: #fff9d6;
+    background: #222;
     transform: translateY(-3px);
-    box-shadow: 0 10px 36px rgba(255, 222, 89, 0.4);
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 960px) {

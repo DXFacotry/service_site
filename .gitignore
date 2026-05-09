@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+*/.DS_Store
+
+# Editor / IDE
+.claude/
+.vscode/
+.idea/
+
+# 環境変数
+.env
+.env.*
+
+# デプロイ用ZIP（Cloudflareアップロード用）
+deploy_*.zip
+dxfactory-site-*.zip
+
+# テスト・実験用
+DX_test/
+
+# Cloudflare DirectUpload除外（_private は配信不要）
+# ※ ただし Git管理はする

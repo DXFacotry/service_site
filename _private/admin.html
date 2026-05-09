@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>DX Factory CMS</title>
+<style>
+  :root {
+    --gold: #FFDE59; --gold-dark: #C9A800; --black: #1A1A1A;
+    --gray: #F4F4F4; --gray-mid: #E0E0E0; --text-light: #666;
+    --danger: #E53E3E; --warn: #DD6B20; --ok: #38A169;
+    --edit-blue: #2B6CB0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; background:#F8F8F8; color:var(--black); font-size:14px; }
+
+  /* ヘッダー */
+  .cms-header { background:var(--black); color:white; padding:14px 32px; display:flex; align-items:center; gap:14px; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,.3); }
+  .cms-header .logo { font-weight:900; font-size:1.05rem; letter-spacing:.1em; color:var(--gold); }
+  .badge { background:rgba(255,222,89,.2); color:var(--gold); font-size:.72rem; padding:2px 10px; border-radius:20px; border:1px solid rgba(255,222,89,.4); }
+
+  /* レイアウト */
+  .cms-body { display:flex; min-height:calc(100vh - 56px); }
+  .sidebar { width:210px; flex-shrink:0; background:white; border-right:1px solid var(--gray-mid); padding:20px 0; }
+  .main { flex:1; padding:28px 36px; max-width:960px; }
+
+  /* サイドバー */
+  .sidebar-title { font-size:.68rem; font-weight:700; color:var(--text-light); letter-spacing:.15em; padding:0 18px 8px; }
+  .sidebar-btn { display:block; width:100%; text-align:left; padding:11px 18px; background:none; border:none; cursor:pointer; font-size:.88rem; font-weight:500; color:var(--black); border-left:3px solid transparent; transition:all .2s; }
+  .sidebar-btn:hover { background:var(--gray); }
+  .sidebar-btn.active { border-left-color:var(--gold); background:#FFFDF0; font-weight:700; }
+  .sidebar-sep { margin:14px 0; border:none; border-top:1px solid var(--gray-mid); }
+
+  /* パネル */
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .panel-title { font-size:1.35rem; font-weight:900; margin-bottom:4px; }
+  .panel-desc { color:var(--text-light); font-size:.875rem; margin-bottom:24px; }
+
+  /* 編集中バナー */
+  .edit-banner { display:none; background:#EBF4FF; border:1.5px solid #90CDF4; border-radius:var(--radius); padding:12px 18px; margin-bottom:20px; align-items:center; gap:12px; }
+  .edit-banner.show { display:flex; }
+  .edit-banner-text { font-weight:700; color:var(--edit-blue); flex:1; font-size:.9rem; }
+  .cancel-btn { background:white; border:1.5px solid var(--gray-mid); color:var(--black); padding:6px 16px; border-radius:5px; cursor:pointer; font-size:.82rem; font-weight:700; transition:all .2s; }
+  .cancel-btn:hover { border-color:var(--danger); color:var(--danger); }
+
+  /* 既存コンテンツリスト */
+  .existing-section { background:white; border-radius:var(--radius); border:1px solid var(--gray-mid); margin-bottom:20px; overflow:hidden; }
+  .existing-header { display:flex; justify-content:space-between; align-items:center; padding:14px 20px; cursor:pointer; user-select:none; border-bottom:1px solid var(--gray-mid); }
+  .existing-header-title { font-weight:700; font-size:.9rem; display:flex; align-items:center; gap:8px; }
+  .existing-count { background:var(--gold); color:var(--black); font-size:.72rem; font-weight:700; padding:1px 8px; border-radius:20px; }
+  .toggle-arrow { font-size:.75rem; color:var(--text-light); transition:transform .2s; }
+  .toggle-arrow.open { transform:rotate(180deg); }
+  .existing-list { padding:12px; display:flex; flex-direction:column; gap:8px; }
+  .existing-card { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:6px; border:1px solid var(--gray-mid); background:var(--gray); transition:all .2s; }
+  .existing-card:hover { border-color:var(--gold-dark); background:#FFFDF0; }
+  .existing-card .num { font-family:monospace; font-weight:700; font-size:.8rem; color:var(--gold-dark); min-width:52px; }
+  .existing-card .info { flex:1; min-width:0; }
+  .existing-card .info-title { font-weight:700; font-size:.88rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .existing-card .info-meta { font-size:.76rem; color:var(--text-light); margin-top:2px; }
+  .edit-btn { background:var(--edit-blue); color:white; border:none; padding:6px 14px; border-radius:5px; font-size:.78rem; font-weight:700; cursor:pointer; white-space:nowrap; transition:all .2s; flex-shrink:0; }
+  .edit-btn:hover { background:#2C5282; }
+  .loading-msg { padding:16px 20px; color:var(--text-light); font-size:.85rem; }
+  .existing-hidden { display:none; }
+
+  /* フォーム */
+  .form-section { background:white; border-radius:var(--radius); padding:24px; margin-bottom:16px; border:1px solid var(--gray-mid); }
+  .form-section-title { font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--text-light); margin-bottom:18px; padding-bottom:10px; border-bottom:1px solid var(--gray); }
+  .form-row { margin-bottom:16px; }
+  .form-row label { display:flex; justify-content:space-between; align-items:baseline; font-size:.84rem; font-weight:700; margin-bottom:5px; }
+  .required { background:var(--gold); color:var(--black); font-size:.66rem; font-weight:700; padding:1px 6px; border-radius:3px; }
+  .optional { color:var(--text-light); font-size:.74rem; font-weight:400; }
+  .char-counter { font-size:.76rem; font-weight:500; color:var(--text-light); }
+  .char-counter.warn { color:var(--warn); }
+  .char-counter.over { color:var(--danger); font-weight:700; }
+
+  input[type="text"],input[type="url"],input[type="date"],select,textarea {
+    width:100%; padding:9px 13px; border:1.5px solid var(--gray-mid);
+    border-radius:6px; font-size:.88rem; font-family:inherit; transition:border-color .2s; background:white;
+  }
+  input:focus,select:focus,textarea:focus { outline:none; border-color:var(--gold-dark); }
+  input.error,textarea.error { border-color:var(--danger); }
+  textarea { resize:vertical; line-height:1.7; }
+  .hint { font-size:.76rem; color:var(--text-light); margin-top:4px; }
+  .hint.error-msg { color:var(--danger); display:none; }
+  .hint.error-msg.show { display:block; }
+
+  .ba-header { display:flex; gap:10px; margin-bottom:4px; }
+  .ba-header span { font-size:.76rem; color:var(--text-light); font-weight:700; }
+  .ba-header span:first-child { flex:2; }
+  .ba-header span:last-child { flex:3; }
+  .ba-row { display:flex; gap:10px; margin-bottom:8px; }
+  .ba-row input:first-child { flex:2; }
+  .ba-row input:last-child { flex:3; }
+  .form-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+  /* ボタン */
+  .generate-btn { background:var(--black); color:var(--gold); border:none; cursor:pointer; padding:14px 40px; border-radius:6px; font-size:1rem; font-weight:700; letter-spacing:.08em; width:100%; margin-top:6px; transition:all .2s; }
+  .generate-btn:hover { background:#333; transform:translateY(-1px); }
+  .generate-btn.edit-mode { background:var(--edit-blue); color:white; }
+  .generate-btn.edit-mode:hover { background:#2C5282; }
+
+  /* 出力 */
+  .output-section { border-radius:var(--radius); padding:24px; margin-top:24px; background:white; border:2px solid var(--gold); }
+  .output-section.edit-mode { border-color:#90CDF4; }
+  .output-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .output-title { font-weight:700; font-size:.92rem; }
+  .output-subtitle { font-size:.8rem; color:var(--text-light); margin-bottom:12px; }
+  .copy-btn { background:var(--gold); color:var(--black); border:none; cursor:pointer; padding:10px 28px; border-radius:5px; font-size:.9rem; font-weight:700; transition:all .2s; }
+  .copy-btn:hover { background:var(--gold-dark); color:white; }
+  .copy-btn.copied { background:var(--ok); color:white; }
+  .output-code { width:100%; min-height:180px; padding:14px; background:#1A1A1A; color:#E5E5E5; border:none; border-radius:6px; font-family:'SF Mono','Consolas',monospace; font-size:.75rem; line-height:1.6; resize:vertical; }
+  .claude-guide { margin-top:14px; background:#F0FFF4; border:1px solid #9AE6B4; border-radius:6px; padding:12px 16px; display:flex; align-items:center; gap:10px; }
+  .claude-guide p { font-size:.82rem; line-height:1.7; color:#276749; }
+
+  /* トースト */
+  .toast { position:fixed; bottom:28px; right:28px; background:var(--ok); color:white; padding:11px 22px; border-radius:8px; font-weight:700; font-size:.88rem; transform:translateY(16px); opacity:0; transition:all .3s; pointer-events:none; z-index:999; }
+  .toast.show { transform:translateY(0); opacity:1; }
+</style>
+</head>
+<body>
+
+<header class="cms-header">
+  <div class="logo">DX Factory</div>
+  <div class="badge">ローカル管理ツール</div>
+</header>
+
+<div class="cms-body">
+  <aside class="sidebar">
+    <div class="sidebar-title">コンテンツ管理</div>
+    <button class="sidebar-btn active" onclick="switchPanel('case', this)">📋 事例（CASE）</button>
+    <button class="sidebar-btn" onclick="switchPanel('column', this)">📝 コラム（COLUMN）</button>
+    <hr class="sidebar-sep">
+    <div class="sidebar-title">ファイルを開く</div>
+    <button class="sidebar-btn" onclick="window.open('case.html','_blank')">🔗 case.html</button>
+    <button class="sidebar-btn" onclick="window.open('column.html','_blank')">🔗 column.html</button>
+    <button class="sidebar-btn" onclick="window.open('index.html','_blank')">🔗 index.html</button>
+  </aside>
+
+  <main class="main">
+
+    <!-- ===== CASE パネル ===== -->
+    <div class="panel active" id="panel-case">
+      <div class="panel-title">📋 事例（CASE）の管理</div>
+      <p class="panel-desc">既存の事例を選んで編集するか、新規追加してください。</p>
+
+      <!-- 編集中バナー -->
+      <div class="edit-banner" id="case-edit-banner">
+        <span class="edit-banner-text" id="case-edit-label">CASE XX を編集中</span>
+        <button class="cancel-btn" onclick="cancelEdit('case')">✕ キャンセルして新規追加に戻る</button>
+      </div>
+
+      <!-- 既存一覧 -->
+      <div class="existing-section" id="case-existing">
+        <div class="existing-header" onclick="toggleList('case-list-wrap', 'case-list-arrow')">
+          <div class="existing-header-title">
+            既存の事例
+            <span class="existing-count" id="case-count">読込中</span>
+          </div>
+          <span class="toggle-arrow open" id="case-list-arrow">▼</span>
+        </div>
+        <div id="case-list-wrap">
+          <div class="loading-msg" id="case-loading">case.html を読み込み中...</div>
+          <div class="existing-list" id="case-list" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- フォーム -->
+      <form id="caseForm" novalidate>
+        <div class="form-section">
+          <div class="form-section-title">基本情報</div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>CASE番号 <span class="required">必須</span></label>
+              <select id="c-num">
+                <option value="04">CASE 04</option><option value="05">CASE 05</option>
+                <option value="06">CASE 06</option><option value="07">CASE 07</option>
+                <option value="08">CASE 08</option><option value="09">CASE 09</option>
+                <option value="10">CASE 10</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>プラン <span class="optional">任意</span></label>
+              <select id="c-plan">
+                <option value="">（未記載）</option>
+                <option value="DISCOVER プラン">DISCOVER プラン</option>
+                <option value="DESIGN プラン">DESIGN プラン</option>
+                <option value="DRIVE プラン">DRIVE プラン</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>業種・規模 <span class="required">必須</span> <span class="char-counter" id="cnt-meta">0 / 35</span></label>
+            <input type="text" id="c-meta" maxlength="50" placeholder="例：北海道の飲食業｜社員5名" oninput="countChars(this,'cnt-meta',35)">
+            <p class="hint">業種・地域・規模など。｜で区切ってください。</p>
+            <p class="hint error-msg" id="err-meta">業種・規模を入力してください</p>
+          </div>
+          <div class="form-row">
+            <label>タイトル <span class="required">必須</span> <span class="char-counter" id="cnt-title">0 / 40</span></label>
+            <input type="text" id="c-title" maxlength="60" placeholder="例：注文管理を自動化し、月30時間の削減を実現" oninput="countChars(this,'cnt-title',40)">
+            <p class="hint error-msg" id="err-title">タイトルを入力してください</p>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">課題 → 解決策 → 結果（Q・A・R）</div>
+          <div class="form-row">
+            <label>Q 課題 <span class="required">必須</span> <span class="char-counter" id="cnt-q">0 / 200</span></label>
+            <textarea id="c-q" rows="4" maxlength="300" placeholder="どんな課題がありましたか？" oninput="countChars(this,'cnt-q',200)"></textarea>
+            <p class="hint error-msg" id="err-q">課題を入力してください</p>
+          </div>
+          <div class="form-row">
+            <label>A 解決策 <span class="required">必須</span> <span class="char-counter" id="cnt-a">0 / 200</span></label>
+            <textarea id="c-a" rows="4" maxlength="300" placeholder="どのようなツール・仕組みで解決しましたか？" oninput="countChars(this,'cnt-a',200)"></textarea>
+            <p class="hint error-msg" id="err-a">解決策を入力してください</p>
+          </div>
+          <div class="form-row">
+            <label>R 結果 <span class="required">必須</span> <span class="char-counter" id="cnt-r">0 / 200</span></label>
+            <textarea id="c-r" rows="4" maxlength="300" placeholder="どんな成果が出ましたか？数字や具体的な変化を。" oninput="countChars(this,'cnt-r',200)"></textarea>
+            <p class="hint error-msg" id="err-r">結果を入力してください</p>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">お客様の声</div>
+          <div class="form-row">
+            <label>コメント <span class="optional">任意</span> <span class="char-counter" id="cnt-voice">0 / 100</span></label>
+            <textarea id="c-voice" rows="2" maxlength="150" placeholder="「...」の形で記載してください" oninput="countChars(this,'cnt-voice',100)"></textarea>
+          </div>
+          <div class="form-row">
+            <label>お客様の属性 <span class="optional">任意</span> <span class="char-counter" id="cnt-author">0 / 30</span></label>
+            <input type="text" id="c-author" maxlength="50" placeholder="例：北海道・葬儀業 経営者" oninput="countChars(this,'cnt-author',30)">
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Before / After（3項目）</div>
+          <p class="hint" style="margin-bottom:12px;">「➔ ○○」の形で変化を記載してください。</p>
+          <div class="ba-header"><span>項目名（Before）</span><span>改善後（After）</span></div>
+          <div class="ba-row"><input type="text" id="ba1-label" placeholder="例：情報管理"><input type="text" id="ba1-value" placeholder="例：➔ スプレッドシート一元化"></div>
+          <div class="ba-row"><input type="text" id="ba2-label" placeholder="例：転記作業"><input type="text" id="ba2-value" placeholder="例：➔ ゼロ"></div>
+          <div class="ba-row"><input type="text" id="ba3-label" placeholder="例：情報連携"><input type="text" id="ba3-value" placeholder="例：➔ リアルタイムで把握"></div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">使用ツール</div>
+          <div class="form-row">
+            <label>ツール名 <span class="optional">任意</span> <span class="char-counter" id="cnt-tools">0 / 60</span></label>
+            <input type="text" id="c-tools" placeholder="例：Google スプレッドシート / GAS" oninput="countChars(this,'cnt-tools',60)">
+          </div>
+        </div>
+
+        <button type="button" class="generate-btn" id="case-gen-btn" onclick="generateCase()">✦ HTMLを生成する</button>
+      </form>
+
+      <!-- 出力 -->
+      <div class="output-section" id="case-output" style="margin-top:24px;">
+        <div class="output-header">
+          <div class="output-title">Claudeへの指示文</div>
+          <button class="copy-btn" onclick="copyOutput('case-code','case-copy-btn')" id="case-copy-btn">📋 コピーする</button>
+        </div>
+        <p class="output-subtitle">↓ これをコピーしてClaudeのチャットに貼り付けるだけで完了します</p>
+        <textarea class="output-code" id="case-code" readonly>← フォームを入力して「HTMLを生成する」を押してください</textarea>
+        <div class="claude-guide">
+          <span style="font-size:1.4rem;">🤖</span>
+          <p>上のテキストをコピー → Claudeのチャットに貼り付け → 送信するだけで、ファイルへの反映まで自動で完了します。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== COLUMN パネル ===== -->
+    <div class="panel" id="panel-column">
+      <div class="panel-title">📝 コラム（COLUMN）の管理</div>
+      <p class="panel-desc">既存のコラムを選んで編集するか、新規追加してください。</p>
+
+      <!-- 編集中バナー -->
+      <div class="edit-banner" id="col-edit-banner">
+        <span class="edit-banner-text" id="col-edit-label">コラムを編集中</span>
+        <button class="cancel-btn" onclick="cancelEdit('col')">✕ キャンセルして新規追加に戻る</button>
+      </div>
+
+      <!-- 既存一覧 -->
+      <div class="existing-section" id="col-existing">
+        <div class="existing-header" onclick="toggleList('col-list-wrap', 'col-list-arrow')">
+          <div class="existing-header-title">
+            既存のコラム
+            <span class="existing-count" id="col-count">読込中</span>
+          </div>
+          <span class="toggle-arrow open" id="col-list-arrow">▼</span>
+        </div>
+        <div id="col-list-wrap">
+          <div class="loading-msg" id="col-loading">column.html を読み込み中...</div>
+          <div class="existing-list" id="col-list" style="display:none;"></div>
+        </div>
+      </div>
+
+      <form id="columnForm" novalidate>
+        <div class="form-section">
+          <div class="form-section-title">基本情報</div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>カテゴリ <span class="required">必須</span></label>
+              <select id="col-cat">
+                <option value="AI活用事例">AI活用事例</option>
+                <option value="業務改善">業務改善</option>
+                <option value="自動化">自動化</option>
+                <option value="DX基礎">DX基礎</option>
+                <option value="ツール紹介">ツール紹介</option>
+                <option value="経営">経営</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>公開日 <span class="required">必須</span></label>
+              <input type="date" id="col-date">
+            </div>
+          </div>
+          <div class="form-row">
+            <label>タイトル <span class="required">必須</span> <span class="char-counter" id="cnt-col-title">0 / 45</span></label>
+            <input type="text" id="col-title" maxlength="70" placeholder="例：GASで月末処理を完全自動化。毎月3日かかっていた集計作業が「ボタン1つ」に" oninput="countChars(this,'cnt-col-title',45)">
+            <p class="hint error-msg" id="err-col-title">タイトルを入力してください</p>
+          </div>
+          <div class="form-row">
+            <label>抜粋テキスト <span class="required">必須</span> <span class="char-counter" id="cnt-excerpt">0 / 120</span></label>
+            <textarea id="col-excerpt" rows="3" maxlength="180" placeholder="記事の概要を2〜3文で。カードに表示されます。" oninput="countChars(this,'cnt-excerpt',120)"></textarea>
+            <p class="hint error-msg" id="err-excerpt">抜粋テキストを入力してください</p>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">アイキャッチ画像</div>
+          <div class="form-row">
+            <label>画像ファイル <span class="optional">任意（未選択でデフォルト画像）</span></label>
+            <input type="file" id="col-img-file" accept="image/*" onchange="handleImageUpload(event)" style="padding:8px;">
+            <p class="hint">JPEG/PNG/WebPなど。自動的に最大幅1200pxにリサイズ・圧縮されます。</p>
+            <div id="col-img-preview-wrap" style="display:none; margin-top:12px;">
+              <img id="col-img-preview" style="max-width:100%; max-height:240px; border-radius:6px; border:1px solid var(--gray-mid);">
+              <p class="hint" id="col-img-info" style="margin-top:6px;"></p>
+              <button type="button" onclick="clearImage()" style="margin-top:6px; background:none; border:1px solid var(--gray-mid); padding:4px 12px; border-radius:4px; font-size:.78rem; cursor:pointer;">✕ 画像をクリア</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>画像URL <span class="optional">代替手段：直接URL指定（ファイル未選択時のみ使用）</span></label>
+            <input type="url" id="col-img" placeholder="例：https://images.unsplash.com/photo-xxxxx?w=1200&q=80">
+            <p class="hint">⚠️ 必ず <code>images.unsplash.com</code> 形式の直接画像URL。記事ページURL（unsplash.com/ja/写真/...）はNG</p>
+          </div>
+          <div class="form-row">
+            <label>画像の説明文（alt） <span class="optional">任意</span> <span class="char-counter" id="cnt-alt">0 / 50</span></label>
+            <input type="text" id="col-alt" maxlength="80" placeholder="例：業務自動化のイメージ" oninput="countChars(this,'cnt-alt',50)">
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">記事ページ（column-NNN.html）</div>
+          <div class="form-row">
+            <label>記事番号 <span class="required">必須</span></label>
+            <input type="text" id="col-num" placeholder="例：002" pattern="[0-9]{3}" maxlength="3" style="max-width:140px;">
+            <p class="hint" id="col-num-hint">既存最大番号 + 1 を自動入力します。column-NNN.html として作成されます。</p>
+            <p class="hint error-msg" id="err-col-num">3桁の数字（例：002）で入力してください</p>
+          </div>
+          <div class="form-row">
+            <label>本文HTML <span class="required">必須</span></label>
+            <textarea id="col-body" rows="14" placeholder="Coworkで生成された本文HTMLをそのまま貼り付けてください。&#10;&#10;例：&#10;&lt;p&gt;リード文。最初の段落は自動的に強調背景になります&lt;/p&gt;&#10;&lt;h2&gt;中見出し&lt;/h2&gt;&#10;&lt;p&gt;本文段落&lt;/p&gt;&#10;&lt;ul&gt;&#10;  &lt;li&gt;箇条書き&lt;/li&gt;&#10;&lt;/ul&gt;"></textarea>
+            <p class="hint">リード（最初の&lt;p&gt;）は黄色アクセント枠で自動強調。h2/h3/p/ul/ol/strong/blockquote/code などが使えます。</p>
+            <p class="hint error-msg" id="err-col-body">本文HTMLを入力してください</p>
+          </div>
+        </div>
+
+        <button type="button" class="generate-btn" id="col-gen-btn" onclick="generateColumn()">✦ HTMLを生成する</button>
+      </form>
+
+      <!-- 出力 -->
+      <div class="output-section" id="col-output" style="margin-top:24px;">
+        <div class="output-header">
+          <div class="output-title">Claudeへの指示文</div>
+          <button class="copy-btn" onclick="copyOutput('col-code','col-copy-btn')" id="col-copy-btn">📋 コピーする</button>
+        </div>
+        <p class="output-subtitle">↓ これをコピーしてClaudeのチャットに貼り付けるだけで完了します</p>
+        <textarea class="output-code" id="col-code" readonly>← フォームを入力して「HTMLを生成する」を押してください</textarea>
+
+        <!-- 画像ダウンロードボタン（アップロード時のみ表示） -->
+        <div id="col-img-download-wrap" style="display:none; margin-top:14px; padding:14px 18px; background:#FFF8E0; border:1.5px solid var(--gold); border-radius:6px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:240px;">
+              <p style="font-weight:700; margin-bottom:4px; font-size:.92rem;">📥 アイキャッチ画像をダウンロード</p>
+              <p style="font-size:.78rem; color:var(--text-light);">クリックすると <code id="col-img-download-name">column-XXX.jpg</code> がダウンロードされます。<br>その後 <code>02_集客/自社サイト/images/columns/</code> へ移動してください。</p>
+            </div>
+            <button type="button" onclick="downloadPendingImage()" style="background:var(--black); color:var(--gold); border:none; padding:12px 24px; border-radius:5px; font-weight:700; cursor:pointer; font-size:.88rem; white-space:nowrap;">📥 ダウンロード</button>
+          </div>
+        </div>
+
+        <div class="claude-guide">
+          <span style="font-size:1.4rem;">🤖</span>
+          <p>上のテキストをコピー → Claudeのチャットに貼り付け → 送信するだけで、ファイルへの反映まで自動で完了します。</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast">✓ クリップボードにコピーしました</div>
+
+<script>
+// ===== 状態管理 =====
+const state = {
+  case: { editMode: false, originalHtml: '' },
+  col:  { editMode: false, originalHtml: '' }
+};
+
+// ===== タブ切り替え =====
+function switchPanel(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== リスト開閉 =====
+function toggleList(wrapId, arrowId) {
+  const wrap = document.getElementById(wrapId);
+  const arrow = document.getElementById(arrowId);
+  const hidden = wrap.classList.toggle('existing-hidden');
+  arrow.classList.toggle('open', !hidden);
+}
+
+// ===== 文字数カウンター =====
+function countChars(el, counterId, limit) {
+  const len = el.value.length;
+  const c = document.getElementById(counterId);
+  c.textContent = `${len} / ${limit}`;
+  c.className = 'char-counter' + (len > limit ? ' over' : len > limit * 0.85 ? ' warn' : '');
+}
+
+// ===== バリデーション =====
+function validateField(id, errId) {
+  const el = document.getElementById(id);
+  const err = errId ? document.getElementById(errId) : null;
+  const ok = el.value.trim() !== '';
+  el.classList.toggle('error', !ok);
+  if (err) err.classList.toggle('show', !ok);
+  return ok;
+}
+
+// ===== 編集キャンセル =====
+function cancelEdit(prefix) {
+  state[prefix].editMode = false;
+  state[prefix].originalHtml = '';
+  document.getElementById(prefix + '-edit-banner').classList.remove('show');
+  const genBtn = document.getElementById(prefix + '-gen-btn');
+  genBtn.textContent = '✦ HTMLを生成する';
+  genBtn.classList.remove('edit-mode');
+  const out = document.getElementById(prefix + '-output');
+  out.classList.remove('edit-mode');
+  if (prefix === 'case') {
+    clearCaseForm();
+    document.getElementById('case-code').value = '← フォームを入力して「HTMLを生成する」を押してください';
+  } else {
+    clearColForm();
+    document.getElementById('col-code').value = '← フォームを入力して「HTMLを生成する」を押してください';
+  }
+}
+
+// ===== フォームクリア =====
+function clearCaseForm() {
+  ['c-meta','c-title','c-q','c-a','c-r','c-voice','c-author','c-tools',
+   'ba1-label','ba1-value','ba2-label','ba2-value','ba3-label','ba3-value']
+    .forEach(id => { const el = document.getElementById(id); if(el) { el.value=''; el.classList.remove('error'); }});
+  document.getElementById('c-num').value = '04';
+  document.getElementById('c-plan').value = '';
+  ['cnt-meta','cnt-title','cnt-q','cnt-a','cnt-r','cnt-voice','cnt-author','cnt-tools']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.textContent = el.textContent.replace(/^\d+/, '0'); });
+}
+function clearColForm() {
+  ['col-title','col-excerpt','col-img','col-alt'].forEach(id => {
+    const el = document.getElementById(id); if(el) { el.value=''; el.classList.remove('error'); }});
+  document.getElementById('col-cat').value = 'AI活用事例';
+  document.getElementById('col-date').valueAsDate = new Date();
+}
+
+// ===== HTML解析・一覧表示 =====
+async function loadExisting() {
+  // CASE
+  try {
+    const res = await fetch('case.html');
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const cards = doc.querySelectorAll('.case-study-card');
+    const list = document.getElementById('case-list');
+    document.getElementById('case-count').textContent = cards.length + '件';
+    document.getElementById('case-loading').style.display = 'none';
+    list.style.display = '';
+    if (cards.length === 0) {
+      list.innerHTML = '<div class="loading-msg">事例がまだありません。</div>';
+    } else {
+      cards.forEach(card => {
+        const badge = card.querySelector('.case-badge')?.textContent.trim() || '';
+        const title = card.querySelector('.case-title')?.textContent.trim() || '';
+        const meta  = card.querySelector('.case-meta')?.textContent.trim() || '';
+        const div = document.createElement('div');
+        div.className = 'existing-card';
+        div.innerHTML = `
+          <span class="num">${badge}</span>
+          <div class="info">
+            <div class="info-title">${title}</div>
+            <div class="info-meta">${meta}</div>
+          </div>
+          <button class="edit-btn" onclick="fillCaseForm(this)">編集</button>`;
+        // データをボタンにまとめて保存
+        div.querySelector('.edit-btn').dataset.html = card.outerHTML;
+        list.appendChild(div);
+      });
+    }
+  } catch(e) {
+    document.getElementById('case-loading').textContent = 'case.html の読み込みに失敗しました。';
+    document.getElementById('case-count').textContent = '-';
+  }
+
+  // COLUMN
+  try {
+    const res = await fetch('column.html');
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const cards = doc.querySelectorAll('article.column-card');
+    const list = document.getElementById('col-list');
+    document.getElementById('col-count').textContent = cards.length + '件';
+    document.getElementById('col-loading').style.display = 'none';
+    list.style.display = '';
+    if (cards.length === 0) {
+      list.innerHTML = '<div class="loading-msg">コラムがまだありません。</div>';
+    } else {
+      cards.forEach(card => {
+        const title = card.querySelector('.column-title')?.textContent.trim() || '';
+        const cat   = card.querySelector('.column-cat')?.textContent.trim() || '';
+        const date  = card.querySelector('.column-date')?.textContent.trim() || '';
+        const div = document.createElement('div');
+        div.className = 'existing-card';
+        div.innerHTML = `
+          <span class="num" style="min-width:64px;">${date}</span>
+          <div class="info">
+            <div class="info-title">${title}</div>
+            <div class="info-meta">${cat}</div>
+          </div>
+          <button class="edit-btn" onclick="fillColForm(this)">編集</button>`;
+        div.querySelector('.edit-btn').dataset.html = card.outerHTML;
+        list.appendChild(div);
+      });
+    }
+  } catch(e) {
+    document.getElementById('col-loading').textContent = 'column.html の読み込みに失敗しました。';
+    document.getElementById('col-count').textContent = '-';
+  }
+}
+
+// ===== フォームへ流し込み（CASE） =====
+function fillCaseForm(btn) {
+  const html = btn.dataset.html;
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const card = doc.querySelector('.case-study-card');
+  if (!card) return;
+
+  const badge = card.querySelector('.case-badge')?.textContent.trim() || '';
+  const num = badge.replace('CASE ', '').trim();
+  const metaFull = card.querySelector('.case-meta')?.textContent.trim() || '';
+  const title = card.querySelector('.case-title')?.textContent.trim() || '';
+
+  // メタからプランを分離
+  const planPatterns = ['DISCOVER プラン','DESIGN プラン','DRIVE プラン'];
+  let meta = metaFull, plan = '';
+  for (const p of planPatterns) {
+    if (metaFull.includes(p)) { plan = p; meta = metaFull.replace('｜' + p, '').replace(p, '').trim(); break; }
+  }
+
+  const sections = card.querySelectorAll('.case-section');
+  const q = sections[0]?.querySelector('p')?.textContent.trim() || '';
+  const a = sections[1]?.querySelector('p')?.textContent.trim() || '';
+  const r = sections[2]?.querySelector('p')?.textContent.trim() || '';
+
+  const voice  = card.querySelector('.testimonial-text')?.textContent.trim() || '';
+  const author = (card.querySelector('.testimonial-author')?.textContent || '').replace(/^[—\-]\s*/, '').trim();
+
+  const baRows = card.querySelectorAll('.ba-row');
+  const baPairs = Array.from(baRows).slice(0,3);
+
+  const tools = card.querySelector('.stats-row span')?.textContent.trim() || '';
+
+  // フォームに流し込み
+  const numSel = document.getElementById('c-num');
+  for (let i = 0; i < numSel.options.length; i++) {
+    if (numSel.options[i].value === num.padStart(2,'0')) { numSel.selectedIndex = i; break; }
+  }
+  document.getElementById('c-plan').value = plan;
+  setVal('c-meta', meta, 'cnt-meta', 35);
+  setVal('c-title', title, 'cnt-title', 40);
+  setVal('c-q', q, 'cnt-q', 200);
+  setVal('c-a', a, 'cnt-a', 200);
+  setVal('c-r', r, 'cnt-r', 200);
+  setVal('c-voice', voice, 'cnt-voice', 100);
+  setVal('c-author', author, 'cnt-author', 30);
+  setVal('c-tools', tools, 'cnt-tools', 60);
+
+  ['ba1','ba2','ba3'].forEach((k, i) => {
+    document.getElementById(k+'-label').value = baPairs[i]?.querySelector('.ba-label')?.textContent.trim() || '';
+    document.getElementById(k+'-value').value = baPairs[i]?.querySelector('.ba-value')?.textContent.trim() || '';
+  });
+
+  // 編集モード ON
+  state.case.editMode = true;
+  state.case.originalHtml = btn.dataset.html;
+  document.getElementById('case-edit-label').textContent = `${badge} を編集中`;
+  document.getElementById('case-edit-banner').classList.add('show');
+  const genBtn = document.getElementById('case-gen-btn');
+  genBtn.textContent = '✦ 変更を反映したHTMLを生成する';
+  genBtn.classList.add('edit-mode');
+  const out = document.getElementById('case-output');
+  out.classList.remove('new-mode'); out.classList.add('edit-mode');
+  document.getElementById('case-new-guide').style.display = 'none';
+  document.getElementById('case-edit-guide').style.display = '';
+
+  // スクロール
+  document.getElementById('caseForm').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ===== フォームへ流し込み（COLUMN） =====
+function fillColForm(btn) {
+  const html = btn.dataset.html;
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const card = doc.querySelector('article.column-card');
+  if (!card) return;
+
+  const cat     = card.querySelector('.column-cat')?.textContent.trim() || 'AI活用事例';
+  const title   = card.querySelector('.column-title')?.textContent.trim() || '';
+  const excerpt = card.querySelector('.column-excerpt')?.textContent.trim() || '';
+  const dateStr = card.querySelector('.column-date')?.textContent.trim() || '';
+  const img     = card.querySelector('img');
+  const imgSrc  = img?.getAttribute('src') || '';
+  const imgAlt  = img?.getAttribute('alt') || '';
+
+  document.getElementById('col-cat').value = cat;
+  // 日付変換 2026.04.20 → 2026-04-20
+  const dateInput = dateStr.replace(/\./g, '-');
+  document.getElementById('col-date').value = dateInput;
+  setVal('col-title', title, 'cnt-col-title', 45);
+  setVal('col-excerpt', excerpt, 'cnt-excerpt', 120);
+  document.getElementById('col-img').value = imgSrc;
+  setVal('col-alt', imgAlt, 'cnt-alt', 50);
+
+  // リンク先から記事番号を抽出（column-NNN.html → NNN）
+  const linkHref = card.querySelector('.column-link')?.getAttribute('href') || '';
+  const numMatch = linkHref.match(/column-(\d{3})\.html/);
+  if (numMatch) {
+    document.getElementById('col-num').value = numMatch[1];
+    // 本文を該当ファイルから取得
+    fetch(linkHref).then(r => r.ok ? r.text() : '').then(html => {
+      if (!html) return;
+      const articleDoc = new DOMParser().parseFromString(html, 'text/html');
+      const articleBody = articleDoc.querySelector('.article-body');
+      if (articleBody) {
+        document.getElementById('col-body').value = articleBody.innerHTML.trim();
+      }
+    }).catch(() => {});
+  }
+
+  // 編集モード ON
+  state.col.editMode = true;
+  state.col.originalHtml = btn.dataset.html;
+  document.getElementById('col-edit-label').textContent = `「${title.slice(0,20)}…」を編集中`;
+  document.getElementById('col-edit-banner').classList.add('show');
+  const genBtn = document.getElementById('col-gen-btn');
+  genBtn.textContent = '✦ 変更を反映したHTMLを生成する';
+  genBtn.classList.add('edit-mode');
+  const out = document.getElementById('col-output');
+  out.classList.remove('new-mode'); out.classList.add('edit-mode');
+  document.getElementById('col-new-guide').style.display = 'none';
+  document.getElementById('col-edit-guide').style.display = '';
+
+  document.getElementById('columnForm').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function setVal(id, val, counterId, limit) {
+  const el = document.getElementById(id);
+  el.value = val;
+  el.classList.remove('error');
+  countChars(el, counterId, limit);
+}
+
+// ===== CASE HTML 生成 =====
+function generateCase() {
+  let ok = true;
+  ok = validateField('c-meta','err-meta') && ok;
+  ok = validateField('c-title','err-title') && ok;
+  ok = validateField('c-q','err-q') && ok;
+  ok = validateField('c-a','err-a') && ok;
+  ok = validateField('c-r','err-r') && ok;
+  if (!ok) { document.querySelector('.error')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+
+  const num   = document.getElementById('c-num').value;
+  const plan  = document.getElementById('c-plan').value;
+  const meta  = esc(document.getElementById('c-meta').value.trim());
+  const planSuffix = plan ? `｜${plan}` : '';
+  const title = esc(document.getElementById('c-title').value.trim());
+  const q     = esc(document.getElementById('c-q').value.trim());
+  const a     = esc(document.getElementById('c-a').value.trim());
+  const r     = esc(document.getElementById('c-r').value.trim());
+  const voice  = document.getElementById('c-voice').value.trim();
+  const author = esc(document.getElementById('c-author').value.trim());
+  const ba1l = esc(document.getElementById('ba1-label').value.trim());
+  const ba1v = esc(document.getElementById('ba1-value').value.trim());
+  const ba2l = esc(document.getElementById('ba2-label').value.trim());
+  const ba2v = esc(document.getElementById('ba2-value').value.trim());
+  const ba3l = esc(document.getElementById('ba3-label').value.trim());
+  const ba3v = esc(document.getElementById('ba3-value').value.trim());
+  const tools = esc(document.getElementById('c-tools').value.trim());
+
+  const voiceBlock = voice ? `
+                        <div class="case-testimonial">
+                            <p class="testimonial-text">${esc(voice)}</p>
+                            ${author ? `<p class="testimonial-author">— ${author}</p>` : ''}
+                        </div>` : '';
+
+  const baRows = [[ba1l,ba1v],[ba2l,ba2v],[ba3l,ba3v]].filter(r=>r[0]||r[1])
+    .map(([l,v]) => `\n                                    <div class="ba-row"><div class="ba-label">${l}</div><div class="ba-value">${v}</div></div>`).join('');
+  const baBlock = baRows ? `
+                        <div class="case-before-after">
+                            <h4 class="ba-title">Before / After</h4>
+                            <div class="ba-grid">${baRows}
+                            </div>
+                        </div>` : '';
+
+  const toolsBlock = tools ? `
+                        <div class="case-stats"><div class="stats-row"><strong>使用ツール：</strong> <span>${tools}</span></div></div>` : '';
+
+  const newHtml = `<!-- CASE ${num} -->
+                    <div class="case-study-card fade-in-up">
+                        <div class="case-header">
+                            <span class="case-badge">CASE ${num}</span>
+                            <p class="case-meta">${meta}${planSuffix}</p>
+                            <h3 class="case-title">${title}</h3>
+                        </div>
+                        <div class="case-body">
+                            <div class="case-section">
+                                <h4 class="case-section-title">Q 課題</h4>
+                                <p class="case-text">${q}</p>
+                            </div>
+                            <div class="case-section">
+                                <h4 class="case-section-title">A 解決策</h4>
+                                <p class="case-text">${a}</p>
+                            </div>
+                            <div class="case-section">
+                                <h4 class="case-section-title">R 結果</h4>
+                                <p class="case-text-highlight">${r}</p>
+                            </div>${voiceBlock}${baBlock}${toolsBlock}
+                        </div>
+                        <button class="case-toggle-btn">詳細を見る <span class="case-toggle-arrow">▼</span></button>
+                    </div>`;
+
+  const filePath = '/Users/kentaro/Desktop/DX Factory/02_集客/自社サイト/case.html';
+  let prompt;
+  if (state.case.editMode) {
+    prompt = `以下の指示に従って \`case.html\` を更新してください。
+
+対象ファイル：${filePath}
+
+【元のHTMLブロック（このブロック全体を削除）】
+${state.case.originalHtml}
+
+【新しいHTMLブロック（削除した場所にそのまま置き換え）】
+${newHtml}`;
+    document.getElementById('case-output').classList.add('edit-mode');
+  } else {
+    prompt = `以下のHTMLブロックを \`case.html\` に追加してください。
+
+対象ファイル：${filePath}
+
+追加場所：ファイル内の \`<!-- 以降にCASEを追加 -->\` というコメント行の直前に挿入してください。
+
+【追加するHTML】
+${newHtml}`;
+    document.getElementById('case-output').classList.remove('edit-mode');
+  }
+  document.getElementById('case-code').value = prompt;
+  document.getElementById('case-output').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ===== COLUMN HTML 生成 =====
+function generateColumn() {
+  let ok = true;
+  ok = validateField('col-title','err-col-title') && ok;
+  ok = validateField('col-excerpt','err-excerpt') && ok;
+  ok = validateField('col-num','err-col-num') && ok;
+  ok = validateField('col-body','err-col-body') && ok;
+  // 記事番号フォーマットチェック
+  const numVal = document.getElementById('col-num').value.trim();
+  if (!/^[0-9]{3}$/.test(numVal)) {
+    document.getElementById('col-num').classList.add('error');
+    document.getElementById('err-col-num').classList.add('show');
+    ok = false;
+  }
+  if (!ok) { document.querySelector('.error')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+
+  const num     = numVal;
+  const cat     = esc(document.getElementById('col-cat').value);
+  const title   = esc(document.getElementById('col-title').value.trim());
+  const titleRaw = document.getElementById('col-title').value.trim();
+  const excerpt = esc(document.getElementById('col-excerpt').value.trim());
+  const excerptRaw = document.getElementById('col-excerpt').value.trim();
+
+  // 画像URL決定：① アップロード画像 ② 直接URL ③ デフォルト
+  let imgUrl;
+  let imageWriteStep = '';
+  if (uploadedImageData) {
+    // アップロード画像 → 相対パス使用
+    imgUrl = `images/columns/column-${num}.jpg`;
+    // ダウンロードファイル名を保持（後でダウンロードボタンが使う）
+    pendingImageDownload = {
+      filename: `column-${num}.jpg`,
+      dataUrl: uploadedImageData.dataUrl
+    };
+    imageWriteStep = `━━━━━━━━━━━━━━━━━━━━━━━━━
+【手順0】アイキャッチ画像を所定フォルダに保存（柳さんが手動でやる）
+━━━━━━━━━━━━━━━━━━━━━━━━━
+1. 「✦ HTMLを生成する」ボタンの下に「📥 画像をダウンロード」ボタンが表示されます
+2. クリックして column-${num}.jpg をダウンロード
+3. Finder で以下のフォルダを開く（無ければ作成）：
+   /Users/kentaro/Desktop/DX Factory/02_集客/自社サイト/images/columns/
+4. ダウンロードした column-${num}.jpg をそこへ移動
+
+【画像サイズ】${uploadedImageData.width}×${uploadedImageData.height}px / 約${uploadedImageData.sizeKb}KB
+
+`;
+  } else {
+    pendingImageDownload = null;
+    const inputUrl = document.getElementById('col-img').value.trim();
+    imgUrl = inputUrl || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80';
+  }
+  const alt     = esc(document.getElementById('col-alt').value.trim()) || title;
+  const dateRaw = document.getElementById('col-date').value;
+  const dateStr = dateRaw ? dateRaw.replace(/-/g,'.') : new Date().toISOString().slice(0,10).replace(/-/g,'.');
+  const dateIso = dateRaw || new Date().toISOString().slice(0,10);
+  const bodyHtml = document.getElementById('col-body').value.trim();
+  const articleFile = `column-${num}.html`;
+  const articleUrl  = `https://dxfactory.jp/${articleFile}`;
+
+  // 一覧用カード（column.html）：「続きを読む →」 + 個別ページへリンク
+  const colCardHtml = `<!-- COLUMN -->
+                    <article class="column-card fade-in-up">
+                        <div class="column-img-wrap">
+                            <img src="${esc(imgUrl)}" alt="${alt}" loading="lazy">
+                        </div>
+                        <div class="column-body">
+                            <span class="column-cat">${cat}</span>
+                            <h3 class="column-title">${title}</h3>
+                            <p class="column-excerpt">${excerpt}</p>
+                            <div class="column-footer">
+                                <span class="column-date">${dateStr}</span>
+                                <a href="${articleFile}" class="column-link">続きを読む →</a>
+                            </div>
+                        </div>
+                    </article>`;
+
+  // index.html 用カード：「詳しく見る →」 + 個別ページへリンク
+  const idxCardHtml = `<!-- COLUMN -->
+                    <article class="column-card fade-in-up">
+                        <div class="column-img-wrap">
+                            <img src="${esc(imgUrl)}" alt="${alt}" loading="lazy">
+                        </div>
+                        <div class="column-body">
+                            <span class="column-cat">${cat}</span>
+                            <h3 class="column-title">${title}</h3>
+                            <p class="column-excerpt">${excerpt}</p>
+                            <div class="column-footer">
+                                <span class="column-date">${dateStr}</span>
+                                <a href="${articleFile}" class="column-link">詳しく見る →</a>
+                            </div>
+                        </div>
+                    </article>`;
+
+  // 個別記事ページ全体HTML（column-NNN.html）
+  const articlePageHtml = `<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}｜コラム｜DX Factory</title>
+    <meta name="description" content="${excerpt}">
+    <link rel="canonical" href="${articleUrl}">
+
+    <!-- OGP -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="${title}｜DX Factory">
+    <meta property="og:description" content="${excerpt}">
+    <meta property="og:url" content="${articleUrl}">
+    <meta property="og:image" content="${esc(imgUrl)}">
+    <meta property="og:site_name" content="DX Factory">
+    <meta property="og:locale" content="ja_JP">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${title}｜DX Factory">
+    <meta name="twitter:description" content="${excerpt}">
+    <meta name="twitter:image" content="${esc(imgUrl)}">
+
+    <link rel="stylesheet" href="styles.css?v=20260509b">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- JSON-LD Article -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": ${JSON.stringify(titleRaw)},
+      "description": ${JSON.stringify(excerptRaw)},
+      "image": ${JSON.stringify(imgUrl)},
+      "datePublished": "${dateIso}",
+      "author": { "@type": "Person", "name": "柳 健太郎" },
+      "publisher": { "@type": "Organization", "name": "DX Factory", "url": "https://dxfactory.jp" },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": "${articleUrl}" }
+    }
+    <\/script>
+</head>
+
+<body>
+    <header class="header scrolled">
+        <div class="header-inner">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo-2line-black.svg" alt="DX Factory" class="logo-img">
+                </a>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html#about">当サービスについて</a></li>
+                    <li><a href="index.html#service">提供サービス</a></li>
+                    <li><a href="case.html">事例</a></li>
+                    <li><a href="column.html" class="nav-active">コラム</a></li>
+                    <li><a href="index.html#pricing">料金プラン</a></li>
+                </ul>
+                <a href="index.html#contact" class="btn btn-header">30分で現状を整理する（無料）</a>
+            </nav>
+            <div class="hamburger">
+                <span style="background:var(--c-black);"></span>
+                <span style="background:var(--c-black);"></span>
+                <span style="background:var(--c-black);"></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-hero">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html">TOP</a>
+                    <span class="breadcrumb-sep">/</span>
+                    <a href="column.html">コラム</a>
+                    <span class="breadcrumb-sep">/</span>
+                    <span>${title}</span>
+                </div>
+                <p class="page-hero-label">COLUMN</p>
+            </div>
+        </div>
+
+        <section class="article-section">
+            <div class="article-container">
+
+                <div class="article-hero">
+                    <span class="article-cat">${cat}</span>
+                    <h1 class="article-title">${title}</h1>
+                    <div class="article-meta">
+                        <span class="article-meta-date">${dateStr}</span>
+                        <span class="article-meta-author">柳 健太郎</span>
+                    </div>
+                </div>
+
+                <div class="article-eyecatch">
+                    <img src="${esc(imgUrl)}" alt="${alt}">
+                </div>
+
+                <article class="article-body">
+${bodyHtml}
+                </article>
+
+                <div class="article-cta">
+                    <div class="article-cta-text">
+                        <span class="article-cta-label">FREE CONSULTATION</span>
+                        <p class="article-cta-title">「自社にも使えるか」をまず一緒に整理しませんか？</p>
+                        <p class="article-cta-desc">30分の無料相談。売り込みなし、質問だけでもOKです。</p>
+                    </div>
+                    <a href="index.html#contact" class="article-cta-btn">無料で相談する →</a>
+                </div>
+
+                <div class="related-articles">
+                    <h2 class="related-articles-title">コラム一覧へ戻る</h2>
+                    <p style="margin-bottom:24px; color:var(--c-text-light);">他の記事も <a href="column.html" style="color:var(--c-accent-dark); text-decoration:underline;">コラム一覧ページ</a> でご覧いただけます。</p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <img src="logo-2line-a.svg" alt="DX Factory" class="footer-logo-img">
+                    </div>
+                    <p class="footer-mission">「仕組み」で企業の生産性を底上げし、<br>次世代へ続く強い事業を作る</p>
+                </div>
+                <div class="footer-nav">
+                    <ul>
+                        <li><a href="index.html#about">当サービスについて</a></li>
+                        <li><a href="index.html#profile">プロフィール</a></li>
+                        <li><a href="index.html#service">提供サービス</a></li>
+                        <li><a href="case.html">事例一覧</a></li>
+                        <li><a href="column.html">コラム一覧</a></li>
+                        <li><a href="index.html#pricing">料金プラン</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <a href="privacy.html">プライバシーポリシー</a>
+                <span class="footer-legal-sep">|</span>
+                <a href="terms.html">事業者情報</a>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 DX Factory. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js?v=20260509b"><\/script>
+    <button class="back-to-top" id="backToTop" aria-label="ページトップへ戻る">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+</body>
+
+</html>
+`;
+
+  const baseDir  = '/Users/kentaro/Desktop/DX Factory/02_集客/自社サイト';
+  const colFile  = `${baseDir}/column.html`;
+  const idxFile  = `${baseDir}/index.html`;
+  const newFile  = `${baseDir}/${articleFile}`;
+  let prompt;
+  if (state.col.editMode) {
+    prompt = `以下の指示に従って既存のコラムを更新してください。
+
+${imageWriteStep}【手順1】個別記事ページを上書き
+対象ファイル：${newFile}
+（既存ファイルがある場合は完全に上書き、無ければ新規作成）
+
+【上書き内容】
+${articlePageHtml}
+
+【手順2】column.html のカードを差し替え
+対象ファイル：${colFile}
+
+元のHTMLブロック（このブロック全体を削除）：
+${state.col.originalHtml}
+
+新しいHTMLブロック（削除した場所にそのまま置き換え）：
+${colCardHtml}`;
+    document.getElementById('col-output').classList.add('edit-mode');
+  } else {
+    prompt = `以下の手順でコラム記事を1本追加してください。
+
+${imageWriteStep}━━━━━━━━━━━━━━━━━━━━━━━━━
+【手順1】個別記事ページを新規作成
+━━━━━━━━━━━━━━━━━━━━━━━━━
+新規ファイル：${newFile}
+
+ファイル内容（全体）：
+${articlePageHtml}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━
+【手順2】column.html の一覧にカードを追加
+━━━━━━━━━━━━━━━━━━━━━━━━━
+対象ファイル：${colFile}
+追加場所：\`<!-- 以降にCOLUMNを追加 -->\` というコメント行の直前
+
+追加するHTML：
+${colCardHtml}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━
+【手順3】index.html のコラムセクションにカードを追加
+━━━━━━━━━━━━━━━━━━━━━━━━━
+対象ファイル：${idxFile}
+追加場所：\`<!-- 以降にCOLUMNを追加 -->\` というコメント行の直前
+※ index.html は記事カードが3件を超える場合、最も古い記事を1件削除してから追加してください。
+
+追加するHTML：
+${idxCardHtml}`;
+    document.getElementById('col-output').classList.remove('edit-mode');
+  }
+  document.getElementById('col-code').value = prompt;
+
+  // 画像ダウンロードボタンの表示切替
+  const dlWrap = document.getElementById('col-img-download-wrap');
+  if (pendingImageDownload) {
+    document.getElementById('col-img-download-name').textContent = pendingImageDownload.filename;
+    dlWrap.style.display = 'block';
+  } else {
+    dlWrap.style.display = 'none';
+  }
+
+  document.getElementById('col-output').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ===== 画像アップロード処理 =====
+let uploadedImageData = null; // { dataUrl, filename, sizeKb }
+let pendingImageDownload = null; // { filename, dataUrl }
+
+function downloadPendingImage() {
+  if (!pendingImageDownload) return;
+  const a = document.createElement('a');
+  a.href = pendingImageDownload.dataUrl;
+  a.download = pendingImageDownload.filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+async function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // ファイル読み込み → リサイズ・圧縮
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const img = new Image();
+    img.onload = () => {
+      // リサイズ計算（最大幅1200px）
+      const maxW = 1200;
+      let w = img.width, h = img.height;
+      if (w > maxW) {
+        h = Math.round(h * maxW / w);
+        w = maxW;
+      }
+      // Canvas で描画 → JPEG変換
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+      // サイズ計算
+      const sizeKb = Math.round(compressedDataUrl.length * 0.75 / 1024);
+
+      uploadedImageData = {
+        dataUrl: compressedDataUrl,
+        sizeKb: sizeKb,
+        width: w,
+        height: h
+      };
+
+      // プレビュー表示
+      document.getElementById('col-img-preview').src = compressedDataUrl;
+      document.getElementById('col-img-preview-wrap').style.display = 'block';
+      document.getElementById('col-img-info').textContent =
+        `✅ ${w}×${h}px / 約${sizeKb}KB （JPEG品質82%で圧縮済み）`;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearImage() {
+  uploadedImageData = null;
+  document.getElementById('col-img-file').value = '';
+  document.getElementById('col-img-preview-wrap').style.display = 'none';
+  document.getElementById('col-img-preview').src = '';
+}
+
+// ===== 既存ファイルから次の記事番号を推測 =====
+async function suggestNextColumnNum() {
+  try {
+    let maxNum = 0;
+    // 1〜30番までcolumn-NNN.htmlをHEADで存在確認
+    const checks = [];
+    for (let i = 1; i <= 30; i++) {
+      const num = String(i).padStart(3, '0');
+      checks.push(
+        fetch(`column-${num}.html`, { method: 'HEAD' })
+          .then(r => { if (r.ok) maxNum = Math.max(maxNum, i); })
+          .catch(() => {})
+      );
+    }
+    await Promise.all(checks);
+    const nextNum = String(maxNum + 1).padStart(3, '0');
+    document.getElementById('col-num').value = nextNum;
+    document.getElementById('col-num-hint').textContent =
+      maxNum > 0
+        ? `既存最大：column-${String(maxNum).padStart(3,'0')}.html → 次は column-${nextNum}.html を推奨`
+        : `初回投稿。column-${nextNum}.html として作成されます。`;
+  } catch (e) {
+    document.getElementById('col-num').value = '001';
+  }
+}
+
+// ===== コピー =====
+function copyOutput(codeId, btnId) {
+  const code = document.getElementById(codeId).value;
+  if (!code || code.startsWith('←')) return;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById(btnId);
+    const orig = btn.textContent;
+    btn.textContent = '✓ コピー済み'; btn.classList.add('copied');
+    const t = document.getElementById('toast'); t.classList.add('show');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); t.classList.remove('show'); }, 2500);
+  });
+}
+
+// ===== ユーティリティ =====
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ===== 初期化 =====
+document.getElementById('col-date').valueAsDate = new Date();
+loadExisting();
+suggestNextColumnNum();
+</script>
+</body>
+</html>

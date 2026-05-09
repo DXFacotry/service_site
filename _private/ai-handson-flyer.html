@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>チラシ（両面A4）｜1on1 AIハンズオン｜DX Factory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #555;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 40px;
+            color: #1A1A1A;
+        }
+
+        .print-hint {
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px 28px;
+            font-size: 13px;
+            color: #444;
+            text-align: center;
+            max-width: 210mm;
+            width: 100%;
+            line-height: 1.9;
+        }
+        .print-hint strong { color: #1A1A1A; }
+
+        .page-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.15em;
+            text-align: center;
+        }
+
+        /* A4 */
+        .flyer {
+            width: 210mm;
+            height: 297mm;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 48px rgba(0,0,0,0.4);
+            position: relative;
+            background: #fff;
+        }
+
+
+        /* ============================
+           表面 FRONT
+        ============================ */
+
+        /* ① ヒーロー黒ブロック */
+        .f-hero {
+            background: #1A1A1A;
+            padding: 18px 28px 20px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 装飾：大きな円弧 */
+        .f-hero::before {
+            content: '';
+            position: absolute;
+            top: -100px; right: -100px;
+            width: 320px; height: 320px;
+            border-radius: 50%;
+            border: 48px solid #FFDE59;
+            opacity: 0.07;
+            pointer-events: none;
+        }
+        .f-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; right: 80px;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: #FFDE59;
+            opacity: 0.04;
+            pointer-events: none;
+        }
+
+        .f-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .f-brand {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 900;
+            color: #FFDE59;
+            letter-spacing: 0.2em;
+        }
+
+        .f-badges {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .badge {
+            font-size: 7px;
+            font-weight: 900;
+            padding: 3px 10px;
+            border-radius: 2px;
+            letter-spacing: 0.08em;
+        }
+
+        .badge-yellow {
+            background: #FFDE59;
+            color: #1A1A1A;
+        }
+
+        .badge-outline {
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.65);
+        }
+
+        .f-program-tag {
+            font-family: 'Inter', sans-serif;
+            font-size: 7.5px;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            color: #FFDE59;
+            margin-bottom: 11px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .f-headline {
+            font-size: 21px;
+            font-weight: 900;
+            line-height: 1.55;
+            color: #fff;
+            margin-bottom: 11px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .f-headline .ac { color: #FFDE59; }
+
+        .f-sub {
+            font-size: 9px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.75;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .f-specs {
+            display: flex;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 4px;
+            overflow: hidden;
+            width: fit-content;
+            position: relative;
+            z-index: 1;
+        }
+
+        .f-spec {
+            padding: 7px 15px;
+            border-right: 1px solid rgba(255,255,255,0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .f-spec:last-child { border-right: none; }
+
+        .f-spec-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 6px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: rgba(255,255,255,0.35);
+        }
+
+        .f-spec-val {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        /* ② 黄色の帯：問いかけ */
+        .f-band {
+            background: #FFDE59;
+            padding: 9px 28px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .f-band-text {
+            font-size: 9.5px;
+            font-weight: 900;
+            color: #1A1A1A;
+        }
+
+        /* ③ チェックリスト */
+        .f-checklist {
+            background: #fff;
+            padding: 13px 28px 12px;
+            flex-shrink: 0;
+        }
+
+        .f-section-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 6.5px;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            color: #BBBBBB;
+            margin-bottom: 9px;
+        }
+
+        .f-check-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 20px;
+        }
+
+        .f-check-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+            font-size: 8.5px;
+            line-height: 1.45;
+            padding: 3px 0;
+        }
+
+        .f-check-icon {
+            width: 14px;
+            height: 14px;
+            min-width: 14px;
+            background: #FFDE59;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6px;
+            font-weight: 900;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        /* ④ 特徴3カード */
+        .f-features {
+            background: #F6F6F6;
+            padding: 13px 28px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .f-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            flex: 1;
+        }
+
+        .f-feature-card {
+            background: #fff;
+            border-radius: 6px;
+            padding: 13px 11px;
+            border-top: 3px solid #FFDE59;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .f-feat-num {
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #FFDE59;
+            line-height: 1;
+        }
+
+        .f-feat-title {
+            font-size: 8.5px;
+            font-weight: 900;
+            line-height: 1.5;
+            color: #1A1A1A;
+        }
+
+        .f-feat-desc {
+            font-size: 7.5px;
+            color: #666;
+            line-height: 1.65;
+        }
+
+        /* ⑤ 表面フッター */
+        .f-footer {
+            background: #1A1A1A;
+            padding: 12px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .f-footer-main {
+            flex: 1;
+        }
+
+        .f-footer-cta {
+            font-size: 10px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+
+        .f-footer-sub {
+            font-size: 7px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .f-qr-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .f-qr {
+            width: 58px;
+            height: 58px;
+            background: #fff;
+            padding: 2px;
+            border-radius: 3px;
+            display: block;
+        }
+
+        .f-qr-note {
+            font-size: 6px;
+            color: rgba(255,255,255,0.35);
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+
+        .f-footer-right {
+            text-align: right;
+        }
+
+        .f-footer-url {
+            font-family: 'Inter', sans-serif;
+            font-size: 9px;
+            font-weight: 900;
+            color: #FFDE59;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .f-footer-flip {
+            font-size: 7px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.4);
+        }
+
+
+        /* ============================
+           裏面 BACK
+        ============================ */
+
+        /* ① ヘッダー */
+        .b-header {
+            background: #1A1A1A;
+            padding: 11px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .b-brand {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 900;
+            color: #FFDE59;
+            letter-spacing: 0.15em;
+        }
+
+        .b-subtitle {
+            font-size: 7.5px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        /* ② カリキュラム */
+        .b-curriculum {
+            background: #fff;
+            padding: 12px 28px 10px;
+            flex-shrink: 0;
+        }
+
+        .b-section-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 6.5px;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            color: #BBBBBB;
+            margin-bottom: 8px;
+        }
+
+        .b-steps {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .b-step {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 10px;
+            padding: 6px 0;
+            border-bottom: 1px solid #F0F0F0;
+            align-items: start;
+        }
+        .b-step:last-child { border-bottom: none; padding-bottom: 0; }
+        .b-step:first-child { padding-top: 0; }
+
+        .b-step-num {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .b-step-session {
+            font-family: 'Inter', sans-serif;
+            font-size: 5.5px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #AAAAAA;
+        }
+
+        .b-step-n {
+            font-family: 'Inter', sans-serif;
+            font-size: 19px;
+            font-weight: 900;
+            color: #1A1A1A;
+            line-height: 1;
+        }
+
+        .b-step-tag {
+            display: inline-block;
+            background: #FFDE59;
+            color: #1A1A1A;
+            font-size: 6px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 1px;
+            margin-bottom: 2px;
+            letter-spacing: 0.05em;
+        }
+
+        .b-step-title {
+            font-size: 8.5px;
+            font-weight: 900;
+            line-height: 1.4;
+            margin-bottom: 1px;
+        }
+
+        .b-step-desc {
+            font-size: 7px;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        /* ③ 料金 */
+        .b-pricing {
+            background: #F6F6F6;
+            padding: 11px 28px 10px;
+            flex-shrink: 0;
+        }
+
+        .b-plan-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .b-plan {
+            background: #fff;
+            border-radius: 6px;
+            padding: 11px 10px;
+            border: 1.5px solid #E4E4E4;
+            position: relative;
+            text-align: center;
+        }
+
+        .b-plan.featured {
+            border-color: #1A1A1A;
+            border-width: 2px;
+        }
+
+        .b-popular {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1A1A1A;
+            color: #FFDE59;
+            font-family: 'Inter', sans-serif;
+            font-size: 6px;
+            font-weight: 900;
+            padding: 2px 10px;
+            border-radius: 10px;
+            white-space: nowrap;
+            letter-spacing: 0.1em;
+        }
+
+        .b-plan-tier {
+            font-family: 'Inter', sans-serif;
+            font-size: 6.5px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #AAAAAA;
+            margin-bottom: 2px;
+        }
+
+        .b-plan-name {
+            font-size: 7.5px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 7px;
+            color: #1A1A1A;
+        }
+
+        .b-plan-price {
+            font-family: 'Inter', sans-serif;
+            font-size: 21px;
+            font-weight: 900;
+            line-height: 1;
+            color: #1A1A1A;
+        }
+
+        .b-plan-unit {
+            font-size: 7px;
+            color: #999;
+            margin-bottom: 7px;
+        }
+
+        .b-plan-items {
+            text-align: left;
+        }
+
+        .b-plan-item {
+            font-size: 7px;
+            color: #555;
+            padding: 1.5px 0;
+            display: flex;
+            gap: 4px;
+            line-height: 1.4;
+        }
+
+        .b-plan-item::before {
+            content: '▸';
+            color: #C9A800;
+            font-size: 6.5px;
+            flex-shrink: 0;
+        }
+
+        .b-pricing-note {
+            font-size: 6.5px;
+            color: #AAAAAA;
+            text-align: center;
+            margin-top: 7px;
+        }
+
+        /* ④ 講師 + 保証 */
+        .b-bottom {
+            background: #fff;
+            padding: 12px 28px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .b-bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .b-instructor {
+            border: 1.5px solid #E8E8E8;
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .b-photo {
+            width: 56px;
+            height: 56px;
+            border-radius: 4px;
+            object-fit: cover;
+            object-position: top;
+            flex-shrink: 0;
+        }
+
+        .b-inst-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 6px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #AAAAAA;
+            margin-bottom: 3px;
+        }
+
+        .b-inst-name {
+            font-size: 13px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        .b-inst-role {
+            font-size: 7px;
+            color: #777;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .b-inst-bio {
+            font-size: 7px;
+            color: #555;
+            line-height: 1.65;
+            margin-bottom: 6px;
+        }
+
+        .b-inst-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+
+        .b-inst-tag {
+            background: #F2F2F2;
+            border-radius: 2px;
+            font-size: 6px;
+            padding: 2px 6px;
+            color: #555;
+        }
+
+        .b-guarantee {
+            background: #1A1A1A;
+            border-radius: 6px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .b-guar-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .b-guar-title {
+            font-size: 10.5px;
+            font-weight: 900;
+            color: #FFDE59;
+            line-height: 1.45;
+        }
+
+        .b-guar-desc {
+            font-size: 7.5px;
+            color: rgba(255,255,255,0.72);
+            line-height: 1.75;
+            flex: 1;
+        }
+
+        .b-guar-note {
+            font-size: 6.5px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* ⑤ 裏面フッター（黄色CTA） */
+        .b-footer {
+            background: #FFDE59;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .b-footer-left {
+            flex: 1;
+        }
+
+        .b-footer-step {
+            font-family: 'Inter', sans-serif;
+            font-size: 6.5px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: rgba(0,0,0,0.4);
+            margin-bottom: 4px;
+        }
+
+        .b-footer-headline {
+            font-size: 13px;
+            font-weight: 900;
+            color: #1A1A1A;
+            line-height: 1.45;
+            margin-bottom: 4px;
+        }
+
+        .b-footer-note {
+            font-size: 7.5px;
+            color: rgba(0,0,0,0.5);
+        }
+
+        .b-qr-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .b-qr {
+            width: 58px;
+            height: 58px;
+            background: #1A1A1A;
+            padding: 2px;
+            border-radius: 3px;
+            display: block;
+        }
+
+        .b-qr-note {
+            font-size: 6px;
+            color: rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .b-footer-right {
+            text-align: right;
+        }
+
+        .b-footer-url {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 900;
+            color: #1A1A1A;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .b-footer-contact {
+            font-size: 7px;
+            color: rgba(0,0,0,0.45);
+        }
+
+        /* 印刷設定 */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+                gap: 0;
+            }
+
+            .print-hint,
+            .page-label { display: none; }
+
+            .flyer {
+                box-shadow: none;
+                page-break-after: always;
+            }
+
+            .flyer:last-child {
+                page-break-after: auto;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+        }
+    </style>
+
+    <!-- Google Search Console -->
+    <meta name="google-site-verification" content="gotGYzDUL-gEQ5sQDgNqi2LGfsHxnl2EEdLtC602Jeo" />
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YX2EHT3J3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8YX2EHT3J3');
+    </script>
+
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "wmq5mzaexq");
+    </script>
+</head>
+<body>
+
+    <div class="print-hint">
+        💡 <strong>印刷方法：</strong>ブラウザの「印刷」→ 用紙サイズ：A4 ／ 余白：なし ／ 倍率：100%<br>
+        両面印刷の場合は「長辺で反転（縦向き）」を選択してください。<br>
+        印刷店に持ち込む場合は「送信先：PDFに保存」でPDF化してからご利用ください。
+    </div>
+
+
+    <!-- ========================
+         表面（FRONT）
+    ======================== -->
+    <p class="page-label">▼ 表面（FRONT）</p>
+    <div class="flyer">
+
+        <!-- ① ヒーロー -->
+        <div class="f-hero">
+            <div class="f-top-row">
+                <span class="f-brand">DX FACTORY</span>
+                <div class="f-badges">
+                    <span class="badge badge-yellow">月2名限定</span>
+                    <span class="badge badge-outline">1回目終了後まで全額返金保証</span>
+                </div>
+            </div>
+            <p class="f-program-tag">1on1 AI HANDS-ON PROGRAM</p>
+            <h1 class="f-headline">
+                「ChatGPTを使っている。<br>
+                でも、<span class="ac">何も変わっていない。」</span><br>
+                その差を埋める、3ヶ月。
+            </h1>
+            <p class="f-sub">
+                帯広・十勝の経営者向け、完全マンツーマンAI活用伴走プログラム。<br>
+                AIを"相談相手"で終わらせない。経営の武器にする。
+            </p>
+            <div class="f-specs">
+                <div class="f-spec">
+                    <span class="f-spec-label">STYLE</span>
+                    <span class="f-spec-val">完全1on1</span>
+                </div>
+                <div class="f-spec">
+                    <span class="f-spec-label">SESSIONS</span>
+                    <span class="f-spec-val">全5回</span>
+                </div>
+                <div class="f-spec">
+                    <span class="f-spec-label">PERIOD</span>
+                    <span class="f-spec-val">3ヶ月</span>
+                </div>
+                <div class="f-spec">
+                    <span class="f-spec-label">FORMAT</span>
+                    <span class="f-spec-val">対面 / オンライン</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ② 黄帯 -->
+        <div class="f-band">
+            <span class="f-band-text">📋 こんな経営者のために設計しました　—　3つ以上あてはまったら、このプログラムはあなたのためにあります</span>
+        </div>
+
+        <!-- ③ チェックリスト -->
+        <div class="f-checklist">
+            <p class="f-section-label">CHECKLIST</p>
+            <div class="f-check-grid">
+                <div class="f-check-row">
+                    <div class="f-check-icon">✓</div>
+                    <span>ChatGPTを試したが、業務では使えていない</span>
+                </div>
+                <div class="f-check-row">
+                    <div class="f-check-icon">✓</div>
+                    <span>AIに質問しても、作業効率がほぼ変わらない</span>
+                </div>
+                <div class="f-check-row">
+                    <div class="f-check-icon">✓</div>
+                    <span>周りがAIで成果を出し始め、焦りを感じている</span>
+                </div>
+                <div class="f-check-row">
+                    <div class="f-check-icon">✓</div>
+                    <span>人を増やさずに、利益・売上を伸ばしたい</span>
+                </div>
+                <div class="f-check-row">
+                    <div class="f-check-icon">✓</div>
+                    <span>自走できる仕組みを作り、次世代に渡したい</span>
+                </div>
+                <div class="f-check-row">
+                    <div class="f-check-icon">✓</div>
+                    <span>一人では進めない。伴走者が欲しい</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ④ 特徴3カード -->
+        <div class="f-features">
+            <p class="f-section-label">FEATURES ／ 選ばれる3つの理由</p>
+            <div class="f-feature-grid">
+                <div class="f-feature-card">
+                    <div class="f-feat-num">01</div>
+                    <div class="f-feat-title">地方中小企業の実情に合わせて設計</div>
+                    <div class="f-feat-desc">「人手不足・少人数・ITスタッフ不在」という現実から出発。あなたの規模・業種に合ったAI活用を設計します。</div>
+                </div>
+                <div class="f-feature-card">
+                    <div class="f-feat-num">02</div>
+                    <div class="f-feat-title">説明ではなく、その場で作る</div>
+                    <div class="f-feat-desc">セッション中に自社業務をAI化。「わかった」で終わらず、翌日から実際に使えるものが手元に残ります。</div>
+                </div>
+                <div class="f-feature-card">
+                    <div class="f-feat-num">03</div>
+                    <div class="f-feat-title">経営者目線で設計する</div>
+                    <div class="f-feat-desc">「ツールの使い方」ではなく「経営にどう活きるか」から入る。利益率・人手不足・事業承継から逆算します。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ⑤ 表面フッター -->
+        <div class="f-footer">
+            <div class="f-footer-main">
+                <p class="f-footer-cta">まずは無料30分から。売り込みは一切しません。</p>
+                <p class="f-footer-sub">ヒアリングと現状整理だけで終わってもOK ／ オンライン・対面どちらでも対応</p>
+            </div>
+            <div class="f-qr-wrap">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=58x58&color=ffffff&bgcolor=1a1a1a&data=https://dxfactory.jp/ai-handson.html" class="f-qr" alt="QRコード">
+                <span class="f-qr-note">QRで申込ページへ</span>
+            </div>
+            <div class="f-footer-right">
+                <span class="f-footer-url">dxfactory.jp/ai-handson.html</span>
+                <span class="f-footer-flip">▶ 料金・カリキュラムは裏面へ</span>
+            </div>
+        </div>
+
+    </div><!-- /FRONT -->
+
+
+    <!-- ========================
+         裏面（BACK）
+    ======================== -->
+    <p class="page-label">▼ 裏面（BACK）</p>
+    <div class="flyer">
+
+        <!-- ① ヘッダー -->
+        <div class="b-header">
+            <span class="b-brand">DX FACTORY ／ 1on1 AIハンズオン</span>
+            <span class="b-subtitle">完全マンツーマン・オーダーメイド AI活用伴走プログラム</span>
+        </div>
+
+        <!-- ② カリキュラム -->
+        <div class="b-curriculum">
+            <p class="b-section-label">CURRICULUM ／ 5回のセッション構成（例）　完全オーダーメイドにつき業種・課題に応じて内容を調整します</p>
+            <div class="b-steps">
+                <div class="b-step">
+                    <div class="b-step-num">
+                        <span class="b-step-session">SESSION</span>
+                        <span class="b-step-n">01</span>
+                    </div>
+                    <div>
+                        <span class="b-step-tag">診断・設計</span>
+                        <p class="b-step-title">現状診断 ＋ AI活用マップの作成</p>
+                        <p class="b-step-desc">業務を棚卸しし、どこにAIを入れると最も効くかを設計。優先順位を決めてから始めます。</p>
+                    </div>
+                </div>
+                <div class="b-step">
+                    <div class="b-step-num">
+                        <span class="b-step-session">SESSION</span>
+                        <span class="b-step-n">02</span>
+                    </div>
+                    <div>
+                        <span class="b-step-tag">基礎習得</span>
+                        <p class="b-step-title">プロンプト設計の基礎 ＋ ハンズオン</p>
+                        <p class="b-step-desc">AIへの指示の書き方を実演で習得。「質問するだけ」から「思い通りに動かす」への転換。</p>
+                    </div>
+                </div>
+                <div class="b-step">
+                    <div class="b-step-num">
+                        <span class="b-step-session">SESSION</span>
+                        <span class="b-step-n">03</span>
+                    </div>
+                    <div>
+                        <span class="b-step-tag">業務直結</span>
+                        <p class="b-step-title">自社業務をその場でAI化する</p>
+                        <p class="b-step-desc">議事録・報告書・メールなど実際の業務をセッション中にAI化。翌日からそのまま使えます。</p>
+                    </div>
+                </div>
+                <div class="b-step">
+                    <div class="b-step-num">
+                        <span class="b-step-session">SESSION</span>
+                        <span class="b-step-n">04</span>
+                    </div>
+                    <div>
+                        <span class="b-step-tag">経営活用</span>
+                        <p class="b-step-title">経営判断・情報収集へのAI活用</p>
+                        <p class="b-step-desc">競合調査・意思決定サポートにAIを活用。「経営者のアシスタント」として使いこなす段階へ。</p>
+                    </div>
+                </div>
+                <div class="b-step">
+                    <div class="b-step-num">
+                        <span class="b-step-session">SESSION</span>
+                        <span class="b-step-n">05</span>
+                    </div>
+                    <div>
+                        <span class="b-step-tag">習慣化</span>
+                        <p class="b-step-title">習慣化 ＋ 次のステップ設計</p>
+                        <p class="b-step-desc">3ヶ月の振り返りと自走の仕組みを確認。GASや自動化など、次フェーズへの道筋を描きます。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ③ 料金 -->
+        <div class="b-pricing">
+            <p class="b-section-label">PRICING ／ 料金プラン（税別・一括払い）</p>
+            <div class="b-plan-grid">
+                <div class="b-plan">
+                    <p class="b-plan-tier">LIGHT</p>
+                    <p class="b-plan-name">まず試したい方へ</p>
+                    <p class="b-plan-price">98,000</p>
+                    <p class="b-plan-unit">円（税別）</p>
+                    <div class="b-plan-items">
+                        <div class="b-plan-item">セッション 2回（各90分）</div>
+                        <div class="b-plan-item">期間：1ヶ月</div>
+                        <div class="b-plan-item">対面 / オンライン可</div>
+                    </div>
+                </div>
+                <div class="b-plan featured">
+                    <span class="b-popular">MOST POPULAR</span>
+                    <p class="b-plan-tier">STANDARD</p>
+                    <p class="b-plan-name">本格的に変えたい方へ</p>
+                    <p class="b-plan-price">298,000</p>
+                    <p class="b-plan-unit">円（税別）</p>
+                    <div class="b-plan-items">
+                        <div class="b-plan-item">セッション 5回（各90分）</div>
+                        <div class="b-plan-item">期間：3ヶ月</div>
+                        <div class="b-plan-item">チャットサポート 月2回</div>
+                        <div class="b-plan-item">宿題・実践レビュー付き</div>
+                    </div>
+                </div>
+                <div class="b-plan">
+                    <p class="b-plan-tier">PREMIUM</p>
+                    <p class="b-plan-name">経営ごと変えたい方へ</p>
+                    <p class="b-plan-price">498,000</p>
+                    <p class="b-plan-unit">円（税別）</p>
+                    <div class="b-plan-items">
+                        <div class="b-plan-item">セッション 8回（各90分）</div>
+                        <div class="b-plan-item">期間：6ヶ月</div>
+                        <div class="b-plan-item">チャットサポート 無制限</div>
+                        <div class="b-plan-item">AI活用ロードマップ付き</div>
+                    </div>
+                </div>
+            </div>
+            <p class="b-pricing-note">※ 全プラン一括払い・税別　／　月2名限定　／　1回目セッション終了後まで全額返金保証</p>
+        </div>
+
+        <!-- ④ 講師 + 保証 -->
+        <div class="b-bottom">
+            <p class="b-section-label">INSTRUCTOR & GUARANTEE</p>
+            <div class="b-bottom-grid">
+                <div class="b-instructor">
+                    <img src="profile.jpg" alt="柳 健太郎" class="b-photo">
+                    <div>
+                        <p class="b-inst-label">INSTRUCTOR</p>
+                        <p class="b-inst-name">柳 健太郎</p>
+                        <p class="b-inst-role">代表 ／ 業務設計・改善コンサルタント</p>
+                        <p class="b-inst-bio">北海道・帯広を拠点に、中小企業の業務改善・DX支援を行う。Google Workspace・GAS・AI活用を専門とし、「社長がいなくても回る組織」の構築を支援。現場に定着するまでの伴走を強みとする。</p>
+                        <div class="b-inst-tags">
+                            <span class="b-inst-tag">Google Workspace</span>
+                            <span class="b-inst-tag">GAS</span>
+                            <span class="b-inst-tag">AI活用</span>
+                            <span class="b-inst-tag">帯広・十勝</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="b-guarantee">
+                    <div class="b-guar-icon">🛡️</div>
+                    <p class="b-guar-title">1回目終了後まで<br>全額返金保証</p>
+                    <p class="b-guar-desc">「思っていたものと違った」という場合も安心してお申し込みいただけます。1回目のセッション終了後まで、理由を問わず全額返金いたします。<br>まず試してみることが大切だと考えています。</p>
+                    <p class="b-guar-note">※ 2回目以降は個別にご相談</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ⑤ 裏面フッター（黄色CTA） -->
+        <div class="b-footer">
+            <div class="b-footer-left">
+                <p class="b-footer-step">FIRST STEP</p>
+                <p class="b-footer-headline">まずは無料30分、<br>現状を一緒に整理しましょう。</p>
+                <p class="b-footer-note">売り込みなし ／ 月2名限定 ／ 2営業日以内に返信 ／ オンライン・対面どちらでも</p>
+            </div>
+            <div class="b-qr-wrap">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=58x58&color=1a1a1a&bgcolor=ffde59&data=https://dxfactory.jp/ai-handson.html" class="b-qr" alt="QRコード">
+                <span class="b-qr-note">QRで申込ページへ</span>
+            </div>
+            <div class="b-footer-right">
+                <span class="b-footer-url">dxfactory.jp/ai-handson.html</span>
+                <span class="b-footer-contact">上記URLのお問い合わせフォームよりご連絡ください</span>
+            </div>
+        </div>
+
+    </div><!-- /BACK -->
+
+</body>
+</html>
