@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1on1 AIハンズオン｜経営者のためのAI活用伴走プログラム｜DX Factory</title>
+    <meta name="description" content="ChatGPTを使っているのに業務が変わらない——その差を埋める、帯広・十勝の経営者向け完全マンツーマンAI活用プログラム。3ヶ月5回の伴走で、AIを経営の武器にします。">
+    <link rel="canonical" href="https://dxfactory.jp/ai-handson.html">
+
+    <!-- OGP -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="1on1 AIハンズオン｜経営者のためのAI活用伴走プログラム｜DX Factory">
+    <meta property="og:description" content="ChatGPTを使っているのに業務が変わらない——その差を埋める、帯広・十勝の経営者向け完全マンツーマンAI活用プログラム。">
+    <meta property="og:url" content="https://dxfactory.jp/ai-handson.html">
+    <meta property="og:image" content="https://dxfactory.jp/ogp.png">
+    <meta property="og:site_name" content="DX Factory">
+    <meta property="og:locale" content="ja_JP">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="1on1 AIハンズオン｜DX Factory">
+    <meta name="twitter:description" content="ChatGPTを使っているのに業務が変わらない——その差を埋める帯広・十勝の経営者向けAI活用プログラム。">
+    <meta name="twitter:image" content="https://dxfactory.jp/ogp.png">
+
+    <link rel="stylesheet" href="styles.css?v=20260509b">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===================================
+           LP固有スタイル
+        =================================== */
+
+        /* Urgency bar */
+        .urgency-bar {
+            background: var(--c-accent);
+            color: var(--c-black);
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 200;
+        }
+
+        .urgency-bar span {
+            border: 1.5px solid var(--c-black);
+            border-radius: 2px;
+            padding: 1px 8px;
+            margin-right: 8px;
+            font-size: 0.75rem;
+        }
+
+        /* urgencyバーの分だけヘッダーを押し下げ */
+        .header { top: 44px; }
+        body { padding-top: 134px; } /* urgencyバー44px + ヘッダー90px */
+
+        /* Hero */
+        .lp-hero {
+            background: var(--c-black);
+            color: #fff;
+            padding: 60px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lp-hero::before {
+            content: '';
+            position: absolute;
+            top: -120px;
+            right: -120px;
+            width: 600px;
+            height: 600px;
+            background: var(--c-accent);
+            border-radius: 50%;
+            opacity: 0.06;
+        }
+
+        .lp-hero-label {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            color: var(--c-accent);
+            margin-bottom: 24px;
+        }
+
+        .lp-hero-catch {
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            font-weight: 900;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            color: #fff;
+        }
+
+        .lp-hero-catch .accent {
+            color: var(--c-accent);
+        }
+
+        .lp-hero-sub {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.75);
+            max-width: 600px;
+            margin-bottom: 48px;
+        }
+
+        .lp-hero-meta {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+
+        .lp-hero-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .lp-hero-meta-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .lp-hero-meta-value {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        /* Problem Section */
+        .problem-section {
+            padding: 100px 0;
+            background: var(--c-bg-gray);
+        }
+
+        .problem-lead {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 900;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .problem-sub {
+            text-align: center;
+            color: var(--c-text-light);
+            font-size: 1rem;
+            margin-bottom: 60px;
+        }
+
+        .checklist {
+            background: #fff;
+            border-radius: 8px;
+            padding: 48px;
+            max-width: 680px;
+            margin: 0 auto 48px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+        }
+
+        .checklist-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: var(--c-text-light);
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-icon {
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            background: var(--c-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 900;
+            margin-top: 2px;
+        }
+
+        .problem-arrow {
+            text-align: center;
+            font-size: 2rem;
+            margin: 0 0 32px;
+            color: var(--c-text-light);
+        }
+
+        .problem-solution {
+            background: var(--c-black);
+            color: #fff;
+            border-radius: 8px;
+            padding: 40px 48px;
+            max-width: 680px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .problem-solution p {
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+
+        .problem-solution strong {
+            color: var(--c-accent);
+        }
+
+        /* Features */
+        .features-section {
+            padding: 100px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            border: 2px solid #E8E8E8;
+            border-radius: 8px;
+            padding: 40px 32px;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--c-accent);
+            transform: translateY(-4px);
+        }
+
+        .feature-number {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--c-accent);
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: var(--c-text-light);
+            line-height: 1.8;
+        }
+
+        /* Curriculum */
+        .curriculum-section {
+            padding: 100px 0;
+            background: var(--c-bg-gray);
+        }
+
+        .curriculum-list {
+            max-width: 760px;
+            margin: 60px auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .curriculum-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 32px;
+            padding: 32px 0;
+            border-bottom: 1px solid #E0E0E0;
+            align-items: start;
+        }
+
+        .curriculum-item:last-child {
+            border-bottom: none;
+        }
+
+        .curriculum-num {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--c-text-light);
+            padding-top: 4px;
+        }
+
+        .curriculum-num span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--c-black);
+            letter-spacing: 0;
+            line-height: 1;
+            margin-top: 4px;
+        }
+
+        .curriculum-title {
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .curriculum-desc {
+            font-size: 0.9rem;
+            color: var(--c-text-light);
+            line-height: 1.8;
+        }
+
+        .curriculum-tag {
+            display: inline-block;
+            background: var(--c-accent);
+            color: var(--c-black);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 2px;
+            margin-bottom: 8px;
+            letter-spacing: 0.1em;
+        }
+
+        /* Pricing */
+        .pricing-section {
+            padding: 100px 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+            align-items: start;
+        }
+
+        .pricing-card {
+            border: 2px solid #E8E8E8;
+            border-radius: 8px;
+            padding: 40px 32px;
+            position: relative;
+        }
+
+        .pricing-card.is-main {
+            border-color: var(--c-black);
+            transform: scale(1.03);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--c-black);
+            color: var(--c-accent);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            padding: 5px 16px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .pricing-tier {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: var(--c-text-light);
+            margin-bottom: 8px;
+        }
+
+        .pricing-name {
+            font-size: 1.25rem;
+            font-weight: 900;
+            margin-bottom: 24px;
+        }
+
+        .pricing-price {
+            margin-bottom: 8px;
+        }
+
+        .pricing-price-num {
+            font-family: var(--font-heading);
+            font-size: 2.75rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .pricing-price-unit {
+            font-size: 0.9rem;
+            color: var(--c-text-light);
+            margin-left: 4px;
+        }
+
+        .pricing-tax {
+            font-size: 0.75rem;
+            color: var(--c-text-light);
+            margin-bottom: 24px;
+        }
+
+        .pricing-divider {
+            border: none;
+            border-top: 1px solid #E8E8E8;
+            margin: 24px 0;
+        }
+
+        .pricing-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .pricing-feature {
+            display: flex;
+            gap: 10px;
+            font-size: 0.9rem;
+            align-items: flex-start;
+            line-height: 1.5;
+        }
+
+        .pricing-feature-icon {
+            color: var(--c-accent-dark);
+            font-weight: 900;
+            min-width: 16px;
+            margin-top: 2px;
+        }
+
+        .pricing-feature.is-muted {
+            color: #ccc;
+        }
+
+        .pricing-feature.is-muted .pricing-feature-icon {
+            color: #ccc;
+        }
+
+        .pricing-cta {
+            display: block;
+            text-align: center;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            border: 2px solid var(--c-black);
+            transition: all 0.3s ease;
+        }
+
+        .pricing-cta:hover {
+            background: var(--c-black);
+            color: #fff;
+        }
+
+        .pricing-card.is-main .pricing-cta {
+            background: var(--c-black);
+            color: var(--c-accent);
+            border-color: var(--c-black);
+        }
+
+        .pricing-card.is-main .pricing-cta:hover {
+            background: var(--c-text);
+        }
+
+        .pricing-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--c-text-light);
+            margin-top: 40px;
+        }
+
+        /* Instructor */
+        .instructor-section {
+            padding: 100px 0;
+            background: var(--c-bg-gray);
+        }
+
+        .instructor-inner {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 60px;
+            align-items: start;
+            max-width: 860px;
+            margin: 60px auto 0;
+        }
+
+        .instructor-photo {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .instructor-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: var(--c-text-light);
+            margin-bottom: 8px;
+        }
+
+        .instructor-name {
+            font-size: 1.75rem;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .instructor-title {
+            font-size: 0.9rem;
+            color: var(--c-text-light);
+            margin-bottom: 28px;
+        }
+
+        .instructor-bio {
+            font-size: 0.95rem;
+            line-height: 2;
+            color: var(--c-text);
+            margin-bottom: 28px;
+        }
+
+        .instructor-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .instructor-tag {
+            background: var(--c-black);
+            color: var(--c-accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 2px;
+            letter-spacing: 0.05em;
+        }
+
+        /* FAQ */
+        .faq-lp-section {
+            padding: 100px 0;
+        }
+
+        .faq-lp-list {
+            max-width: 760px;
+            margin: 60px auto 0;
+        }
+
+        /* CTA */
+        .lp-cta-section {
+            padding: 100px 0;
+            background: var(--c-black);
+            color: #fff;
+            text-align: center;
+        }
+
+        .lp-cta-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            color: var(--c-accent);
+            margin-bottom: 24px;
+        }
+
+        .lp-cta-title {
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            font-weight: 900;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .lp-cta-sub {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 48px;
+            line-height: 1.8;
+        }
+
+        .lp-cta-btn {
+            display: inline-block;
+            background: var(--c-accent);
+            color: var(--c-black);
+            padding: 20px 60px;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            transition: all 0.3s ease;
+        }
+
+        .lp-cta-btn:hover {
+            background: var(--c-accent-dark);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(201,168,0,0.4);
+        }
+
+        .lp-cta-note {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.45);
+        }
+
+        /* Transformation */
+        .transformation-section {
+            padding: 80px 0;
+            background: var(--c-black);
+        }
+
+        .transformation-grid {
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 0;
+            align-items: center;
+            max-width: 800px;
+            margin: 40px auto 0;
+        }
+
+        .transformation-box {
+            padding: 32px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .transformation-box.is-after {
+            background: var(--c-accent);
+            color: var(--c-black);
+        }
+
+        .transformation-label {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            margin-bottom: 16px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .transformation-box.is-after .transformation-label {
+            color: rgba(0,0,0,0.5);
+        }
+
+        .transformation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .transformation-item {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.5;
+            display: flex;
+            gap: 8px;
+        }
+
+        .transformation-box.is-after .transformation-item {
+            color: var(--c-black);
+            font-weight: 700;
+        }
+
+        .transformation-arrow {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--c-accent);
+            font-weight: 900;
+        }
+
+        /* Inline mini-CTA */
+        .inline-cta {
+            background: var(--c-bg-gray);
+            border-left: 4px solid var(--c-accent);
+            padding: 28px 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 60px;
+        }
+
+        .inline-cta-text {
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.6;
+        }
+
+        .inline-cta-sub {
+            font-size: 0.85rem;
+            color: var(--c-text-light);
+            margin-top: 4px;
+        }
+
+        .inline-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            background: var(--c-black);
+            color: var(--c-accent);
+            padding: 14px 28px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .inline-cta-btn:hover {
+            background: var(--c-text);
+            transform: translateY(-2px);
+        }
+
+        /* Guarantee box */
+        .guarantee-box {
+            max-width: 680px;
+            margin: 48px auto 0;
+            border: 2px solid var(--c-accent);
+            border-radius: 8px;
+            padding: 32px 40px;
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .guarantee-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .guarantee-title {
+            font-size: 1rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .guarantee-text {
+            font-size: 0.9rem;
+            color: var(--c-text-light);
+            line-height: 1.8;
+        }
+
+        /* Pricing urgency */
+        .pricing-urgency {
+            background: var(--c-black);
+            color: var(--c-accent);
+            text-align: center;
+            padding: 14px;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.85rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            margin-bottom: -8px;
+        }
+
+        /* Section divider */
+        .section-divider {
+            width: 40px;
+            height: 3px;
+            background: var(--c-accent);
+            margin: 20px auto 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .lp-hero {
+                padding: 120px 0 80px;
+            }
+
+            .lp-hero-meta {
+                gap: 24px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .curriculum-item {
+                grid-template-columns: 80px 1fr;
+                gap: 20px;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.is-main {
+                transform: none;
+            }
+
+            .instructor-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .instructor-photo {
+                max-width: 200px;
+            }
+
+            .checklist {
+                padding: 32px 24px;
+            }
+
+            .problem-solution {
+                padding: 32px 24px;
+            }
+        }
+        /* ===================================
+           可読性改善パッチ
+        =================================== */
+
+        /* ヒーロー h1 を大きく */
+        .lp-hero-catch {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+        }
+
+        /* ヒーロー サブテキスト・メタラベル の白文字を濃く */
+        .lp-hero-sub {
+            color: rgba(255,255,255,0.92);
+            font-size: 1.15rem;
+        }
+        .lp-hero-meta-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* 本文・説明テキストを 0.9rem → 1rem に */
+        .feature-desc,
+        .curriculum-desc,
+        .pricing-feature,
+        .pricing-cta,
+        .instructor-title {
+            font-size: 1rem;
+        }
+
+        /* 0.95rem → 1.05rem */
+        .instructor-bio {
+            font-size: 1.05rem;
+        }
+
+        /* 小さすぎるラベル・タグを底上げ */
+        .lp-hero-label,
+        .lp-hero-meta-label,
+        .pricing-tier,
+        .pricing-tax,
+        .instructor-label,
+        .instructor-tag,
+        .curriculum-num {
+            font-size: 0.85rem;
+        }
+        .curriculum-tag,
+        .pricing-badge {
+            font-size: 0.8rem;
+        }
+
+        /* 暗背景の白文字を全体的に濃く */
+        .lp-cta-section .lp-cta-sub,
+        .lp-cta-section p {
+            color: rgba(255,255,255,0.92);
+        }
+    </style>
+
+    <!-- Google Search Console -->
+    <meta name="google-site-verification" content="gotGYzDUL-gEQ5sQDgNqi2LGfsHxnl2EEdLtC602Jeo" />
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YX2EHT3J3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8YX2EHT3J3');
+    </script>
+
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "wmq5mzaexq");
+    </script>
+</head>
+
+<body>
+    <!-- Urgency Bar -->
+    <div class="urgency-bar">
+        <span>月2名限定</span>現在受付中 ／ 1回目終了後まで返金保証あり
+    </div>
+
+    <!-- Header -->
+    <header class="header scrolled">
+        <div class="header-inner">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo-2line-black.svg" alt="DX Factory" class="logo-img">
+                </a>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html#about">当サービスについて</a></li>
+                    <li><a href="index.html#service">提供サービス</a></li>
+                    <li><a href="case.html">事例</a></li>
+                    <li><a href="column.html">コラム</a></li>
+                    <li><a href="index.html#pricing">料金プラン</a></li>
+                </ul>
+                <a href="index.html#contact" class="btn btn-header">30分で現状を整理する（無料）</a>
+            </nav>
+            <div class="hamburger" aria-label="メニューを開く" role="button" tabindex="0" aria-expanded="false">
+                <span style="background:var(--c-black);"></span>
+                <span style="background:var(--c-black);"></span>
+                <span style="background:var(--c-black);"></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="lp-hero">
+            <div class="container">
+                <p class="lp-hero-label">1on1 AI HANDS-ON PROGRAM</p>
+                <h1 class="lp-hero-catch">
+                    「ChatGPTを使っている。<br>
+                    でも、<span class="accent">何も変わっていない。</span>」<br>
+                    その差を埋める、3ヶ月。
+                </h1>
+                <p class="lp-hero-sub">
+                    AIを"相談相手"で終わらせない。<br>
+                    十勝・帯広の経営者向け、完全マンツーマンAI活用伴走プログラム。
+                </p>
+                <div class="lp-hero-meta">
+                    <div class="lp-hero-meta-item">
+                        <span class="lp-hero-meta-label">STYLE</span>
+                        <span class="lp-hero-meta-value">完全1on1</span>
+                    </div>
+                    <div class="lp-hero-meta-item">
+                        <span class="lp-hero-meta-label">SESSIONS</span>
+                        <span class="lp-hero-meta-value">全5回</span>
+                    </div>
+                    <div class="lp-hero-meta-item">
+                        <span class="lp-hero-meta-label">PERIOD</span>
+                        <span class="lp-hero-meta-value">3ヶ月</span>
+                    </div>
+                    <div class="lp-hero-meta-item">
+                        <span class="lp-hero-meta-label">FORMAT</span>
+                        <span class="lp-hero-meta-value">対面 / オンライン</span>
+                    </div>
+                </div>
+                <p style="color:var(--c-accent); font-size:1rem; font-weight:700; margin-bottom:32px; letter-spacing:0.05em;">→ 3ヶ月で、AIが「毎日使える仕事の道具」に変わる</p>
+                <a href="index.html#contact" class="lp-cta-btn">まず無料で相談する（30分）</a>
+            </div>
+        </section>
+
+        <!-- Problem -->
+        <section class="problem-section">
+            <div class="container">
+                <p class="problem-lead fade-in-up">こんな状態、心当たりありませんか？</p>
+                <p class="problem-sub fade-in-up">3つ以上当てはまる方のために、このプログラムを設計しました。</p>
+
+                <div class="checklist fade-in-up">
+                    <p class="checklist-title">CHECKLIST</p>
+                    <div class="checklist-item">
+                        <div class="checklist-icon">✓</div>
+                        <span>ChatGPT・Claudeを試したことはあるが、毎日の業務には使えていない</span>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon">✓</div>
+                        <span>AIに質問はするが、実際の作業効率はほとんど変わっていない</span>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon">✓</div>
+                        <span>周りの経営者がAIで成果を出し始めていて、焦りを感じている</span>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon">✓</div>
+                        <span>人を増やさずに、売上・利益を伸ばしたい</span>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon">✓</div>
+                        <span>自分がいなくても回る仕組みを作り、次の世代に渡したい</span>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon">✓</div>
+                        <span>テクノロジーへの抵抗はない。でも、一人では進められない</span>
+                    </div>
+                </div>
+
+                <div class="problem-arrow fade-in-up">↓</div>
+
+                <div class="problem-solution fade-in-up">
+                    <p>問題はAIではなく、<strong>「自社業務への落とし込み方」</strong>です。<br>
+                    正しい使い方を設計すれば、AIは経営者の最強の武器になります。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transformation -->
+        <section class="transformation-section">
+            <div class="container">
+                <p style="text-align:center; font-size:0.75rem; font-weight:700; letter-spacing:0.2em; color:var(--c-accent); margin-bottom:8px;">BEFORE / AFTER</p>
+                <p style="text-align:center; font-size:1.5rem; font-weight:900; color:#fff;">3ヶ月後、何が変わるか</p>
+                <div class="transformation-grid fade-in-up">
+                    <div class="transformation-box">
+                        <p class="transformation-label">BEFORE ／ 今の状態</p>
+                        <div class="transformation-list">
+                            <div class="transformation-item"><span>✕</span><span>AIは使っているが、業務は何も変わっていない</span></div>
+                            <div class="transformation-item"><span>✕</span><span>プロンプトの書き方がわからず、毎回手探り</span></div>
+                            <div class="transformation-item"><span>✕</span><span>情報収集・経営判断はこれまで通りの方法</span></div>
+                            <div class="transformation-item"><span>✕</span><span>「使い方を学ぶ時間がない」で止まっている</span></div>
+                        </div>
+                    </div>
+                    <div class="transformation-arrow">→</div>
+                    <div class="transformation-box is-after">
+                        <p class="transformation-label">AFTER ／ 3ヶ月後</p>
+                        <div class="transformation-list">
+                            <div class="transformation-item"><span>✓</span><span>自社業務に直結したAI活用が毎日の習慣に</span></div>
+                            <div class="transformation-item"><span>✓</span><span>思い通りに動くプロンプトを自分で書ける</span></div>
+                            <div class="transformation-item"><span>✓</span><span>競合調査・情報収集・意思決定にAIを活用</span></div>
+                            <div class="transformation-item"><span>✓</span><span>次の仕組み化・自動化への道筋が見えている</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title fade-in-up">FEATURES</h2>
+                <p class="section-intro fade-in-up">このプログラムが選ばれる3つの理由</p>
+                <div class="section-divider" style="margin-bottom:0;"></div>
+
+                <div class="features-grid">
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-number">01</div>
+                        <h3 class="feature-title">地方中小企業の実情に合わせて設計する</h3>
+                        <p class="feature-desc">「人手不足・少人数・ITに詳しいスタッフがいない」——それが地方中小企業の現実です。大企業向けの導入事例や都市部の前提とは切り離し、あなたの会社の規模・業種・現場に合ったAI活用を一緒に設計します。</p>
+                    </div>
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-number">02</div>
+                        <h3 class="feature-title">説明ではなく、その場で作る</h3>
+                        <p class="feature-desc">セッション中に自社の実際の業務（メール・報告書・情報収集など）をその場でAI化します。「わかった」で終わらず、セッション後すぐに使えるものが手元に残ります。</p>
+                    </div>
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-number">03</div>
+                        <h3 class="feature-title">経営者目線で設計する</h3>
+                        <p class="feature-desc">ツールの使い方ではなく「経営にどう活きるか」から入ります。利益率の改善・人手不足の解消・事業承継の準備——あなたの経営課題から逆算してAIを設計します。</p>
+                    </div>
+                </div>
+
+                <!-- Features inline CTA -->
+                <div class="inline-cta fade-in-up">
+                    <div>
+                        <p class="inline-cta-text">「自分の会社に合うか、まず話だけ聞きたい」</p>
+                        <p class="inline-cta-sub">無料30分相談は売り込みなし。現状を整理するだけでもOKです。</p>
+                    </div>
+                    <a href="index.html#contact" class="inline-cta-btn">無料で相談する →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curriculum -->
+        <section class="curriculum-section">
+            <div class="container">
+                <h2 class="section-title fade-in-up">CURRICULUM</h2>
+                <p class="section-intro fade-in-up">5回のセッション構成（例）</p>
+                <div class="section-divider" style="margin-bottom:0;"></div>
+                <p class="fade-in-up" style="text-align:center; font-size:0.9rem; color:var(--c-text-light); margin-top:24px; line-height:1.8;">このプログラムは<strong>完全オーダーメイド</strong>です。<br>初回セッションでのヒアリングをもとに、あなたの業種・課題・ペースに合わせて内容を設計します。</p>
+
+                <div class="curriculum-list">
+                    <div class="curriculum-item fade-in-up">
+                        <div class="curriculum-num">SESSION<span>01</span></div>
+                        <div>
+                            <span class="curriculum-tag">診断・設計</span>
+                            <h3 class="curriculum-title">現状診断 ＋ AI活用マップの作成</h3>
+                            <p class="curriculum-desc">業務を棚卸しし、「どこにAIを入れると最も効くか」を一緒に設計します。闇雲に試すのではなく、あなたの会社に合った優先順位から始めます。</p>
+                        </div>
+                    </div>
+                    <div class="curriculum-item fade-in-up">
+                        <div class="curriculum-num">SESSION<span>02</span></div>
+                        <div>
+                            <span class="curriculum-tag">基礎習得</span>
+                            <h3 class="curriculum-title">プロンプト設計の基礎 ＋ ハンズオン</h3>
+                            <p class="curriculum-desc">AIへの指示（プロンプト）の書き方を実演形式で習得。「質問するだけ」から「思い通りに動かす」に変わるための核心スキルを身につけます。</p>
+                        </div>
+                    </div>
+                    <div class="curriculum-item fade-in-up">
+                        <div class="curriculum-num">SESSION<span>03</span></div>
+                        <div>
+                            <span class="curriculum-tag">業務直結</span>
+                            <h3 class="curriculum-title">自社業務をその場でAI化する</h3>
+                            <p class="curriculum-desc">議事録・報告書・メール・企画書など、実際の業務をセッション中にAI化します。完成したものをそのまま翌日から使えます。</p>
+                        </div>
+                    </div>
+                    <div class="curriculum-item fade-in-up">
+                        <div class="curriculum-num">SESSION<span>04</span></div>
+                        <div>
+                            <span class="curriculum-tag">経営活用</span>
+                            <h3 class="curriculum-title">経営判断・情報収集へのAI活用</h3>
+                            <p class="curriculum-desc">競合調査・市場動向の把握・意思決定のサポートにAIを使う方法を習得。「経営者のアシスタント」としてAIを使いこなす段階に入ります。</p>
+                        </div>
+                    </div>
+                    <div class="curriculum-item fade-in-up">
+                        <div class="curriculum-num">SESSION<span>05</span></div>
+                        <div>
+                            <span class="curriculum-tag">習慣化</span>
+                            <h3 class="curriculum-title">習慣化 ＋ 次のステップ設計</h3>
+                            <p class="curriculum-desc">3ヶ月の振り返りと自走できる仕組みの確認。GASや自動化など、次の改善フェーズへの道筋も一緒に描きます。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curriculum inline CTA -->
+        <div style="background:var(--c-bg-gray); padding: 0 0 80px;">
+            <div class="container">
+                <div class="inline-cta fade-in-up">
+                    <div>
+                        <p class="inline-cta-text">「このカリキュラム、自分の業種に合わせてもらえますか？」</p>
+                        <p class="inline-cta-sub">完全オーダーメイドです。まず業種・課題をヒアリングします（無料）。</p>
+                    </div>
+                    <a href="index.html#contact" class="inline-cta-btn">内容を相談する →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing -->
+        <section class="pricing-section" id="pricing">
+            <div class="container">
+                <h2 class="section-title fade-in-up">PRICING</h2>
+                <p class="section-intro fade-in-up">3つのプランからお選びください</p>
+                <div class="section-divider" style="margin-bottom:0;"></div>
+
+                <div class="pricing-urgency fade-in-up" style="margin-top:48px;">
+                    ⚠️ 月2名限定のため、お申し込みはお早めに
+                </div>
+                <div class="pricing-grid">
+                    <!-- Light -->
+                    <div class="pricing-card fade-in-up">
+                        <p class="pricing-tier">LIGHT</p>
+                        <h3 class="pricing-name">まず試したい方へ</h3>
+                        <div class="pricing-price">
+                            <span class="pricing-price-num">98,000</span>
+                            <span class="pricing-price-unit">円</span>
+                        </div>
+                        <p class="pricing-tax">税別 / 一括払い</p>
+                        <hr class="pricing-divider">
+                        <div class="pricing-features">
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>セッション 2回（各90分）</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>期間：1ヶ月</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>対面 / オンライン選択可</span>
+                            </div>
+                            <div class="pricing-feature is-muted">
+                                <span class="pricing-feature-icon">－</span>
+                                <span>セッション間チャットサポート</span>
+                            </div>
+                            <div class="pricing-feature is-muted">
+                                <span class="pricing-feature-icon">－</span>
+                                <span>宿題・実践レビュー</span>
+                            </div>
+                        </div>
+                        <a href="index.html#contact" class="pricing-cta">相談してみる</a>
+                    </div>
+
+                    <!-- Standard -->
+                    <div class="pricing-card is-main fade-in-up">
+                        <span class="pricing-badge">MOST POPULAR</span>
+                        <p class="pricing-tier">STANDARD</p>
+                        <h3 class="pricing-name">本格的に変えたい方へ</h3>
+                        <div class="pricing-price">
+                            <span class="pricing-price-num">298,000</span>
+                            <span class="pricing-price-unit">円</span>
+                        </div>
+                        <p class="pricing-tax">税別 / 一括払い</p>
+                        <hr class="pricing-divider">
+                        <div class="pricing-features">
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>セッション 5回（各90分）</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>期間：3ヶ月</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>対面 / オンライン選択可</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>チャットサポート 月2回まで</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>宿題・実践レビュー付き</span>
+                            </div>
+                        </div>
+                        <a href="index.html#contact" class="pricing-cta">相談してみる</a>
+                    </div>
+
+                    <!-- Premium -->
+                    <div class="pricing-card fade-in-up">
+                        <p class="pricing-tier">PREMIUM</p>
+                        <h3 class="pricing-name">経営ごと変えたい方へ</h3>
+                        <div class="pricing-price">
+                            <span class="pricing-price-num">498,000</span>
+                            <span class="pricing-price-unit">円</span>
+                        </div>
+                        <p class="pricing-tax">税別 / 一括払い</p>
+                        <hr class="pricing-divider">
+                        <div class="pricing-features">
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>セッション 8回（各90分）</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>期間：6ヶ月</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>対面 / オンライン選択可</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>チャットサポート 無制限</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>宿題・実践レビュー付き</span>
+                            </div>
+                            <div class="pricing-feature">
+                                <span class="pricing-feature-icon">●</span>
+                                <span>AI活用ロードマップ（成果物）</span>
+                            </div>
+                        </div>
+                        <a href="index.html#contact" class="pricing-cta">相談してみる</a>
+                    </div>
+                </div>
+
+                <p class="pricing-note fade-in-up">
+                    ※ 全プラン一括払い・税別　※ 月2名限定
+                </p>
+
+                <!-- Guarantee -->
+                <div class="guarantee-box fade-in-up">
+                    <div class="guarantee-icon">🛡️</div>
+                    <div>
+                        <p class="guarantee-title">1回目終了後まで、全額返金保証</p>
+                        <p class="guarantee-text">「思っていたものと違った」という場合も安心してお申し込みください。1回目のセッション終了後までであれば、理由を問わず全額返金いたします。まず試してみることが大切だと考えています。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instructor -->
+        <section class="instructor-section">
+            <div class="container">
+                <h2 class="section-title fade-in-up">INSTRUCTOR</h2>
+                <div class="section-divider"></div>
+
+                <div class="instructor-inner">
+                    <img src="profile.jpg" alt="柳 健太郎 プロフィール写真" class="instructor-photo fade-in-up" loading="lazy">
+                    <div class="fade-in-up">
+                        <p class="instructor-label">INSTRUCTOR</p>
+                        <h3 class="instructor-name">柳 健太郎</h3>
+                        <p class="instructor-title">代表 / 業務設計・改善コンサルタント</p>
+                        <p class="instructor-bio">
+                            北海道・帯広を拠点に、中小企業の業務改善・DX支援を行う。Google Workspace・GAS・Claudeを活用した仕組みづくりを専門とし、「社長がいなくても回る組織」の構築を支援。IT・テクノロジーを導入するだけでなく、現場に定着させ利益につながるまでの伴走を強みとする。
+                        </p>
+                        <div class="instructor-tags">
+                            <span class="instructor-tag">Google Workspace</span>
+                            <span class="instructor-tag">GAS</span>
+                            <span class="instructor-tag">Claude / AI活用</span>
+                            <span class="instructor-tag">業務設計</span>
+                            <span class="instructor-tag">帯広・十勝</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq-lp-section">
+            <div class="container">
+                <h2 class="section-title fade-in-up">FAQ</h2>
+                <p class="section-intro fade-in-up">申し込む前に気になること</p>
+                <div class="section-divider" style="margin-bottom:0;"></div>
+
+                <div class="faq-lp-list">
+                    <div class="faq-item fade-in-up">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>成果が出なかった場合はどうなりますか？</span>
+                            <span class="faq-icon">＋</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>1回目のセッション終了後まで全額返金保証があります。「思っていた内容と違う」「自分には合わない」と感じた場合は、遠慮なくお申し出ください。また、3ヶ月の伴走を通じて成果が出るよう、セッションごとに進捗を確認しながら内容を柔軟に調整します。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in-up">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>30万円の投資対効果はありますか？</span>
+                            <span class="faq-icon">＋</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>支援先の実績では、月平均30時間以上の業務削減が起きています。仮に人件費2,500円/時間で換算すると、月7.5万円・年90万円の削減効果です。3ヶ月のプログラム費用は初年度で回収できる計算になります。もちろん効果は業種・課題によって異なりますが、まず無料相談でご自身のケースを試算してみてください。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in-up">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>忙しい経営者でも続けられますか？</span>
+                            <span class="faq-icon">＋</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>スタンダードプランで月2回・各90分が基本ペースです。セッションのスケジュールは毎回ご都合に合わせて設定します。また「セッション間に宿題をやる時間がない」という方でも、セッション内だけで完結するよう設計しているため、忙しい経営者の方こそ向いています。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in-up">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>AIやITが得意でなくても大丈夫ですか？</span>
+                            <span class="faq-icon">＋</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>はい、問題ありません。ただし「ある程度触ったことがある」方を主な対象としています。ChatGPTやClaudeを一度も触ったことがない場合は、まず無料相談でご状況をお聞かせください。スタート地点に合わせた準備をご案内します。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in-up">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>プログラム終了後のサポートはありますか？</span>
+                            <span class="faq-icon">＋</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>プログラム終了後は、月額顧問契約（業務改善・GAS・自動化支援）へ移行するクライアントが多くいます。「AIを使えるようになった次のステップ」として、仕組み化・自動化の実装支援も対応しています。詳しくはプログラム最終回（SESSION 05）でご相談ください。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in-up">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>帯広・十勝以外の地域でも受けられますか？</span>
+                            <span class="faq-icon">＋</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>オンライン（Zoom）で全国対応しています。対面を希望の場合は帯広市内での実施となります。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="lp-cta-section">
+            <div class="container">
+                <p class="lp-cta-label">FIRST STEP</p>
+                <h2 class="lp-cta-title">まずは無料30分、<br>現状を一緒に整理しましょう。</h2>
+                <p class="lp-cta-sub">
+                    「AIを使っているのに何も変わらない理由」が、<br>
+                    30分話すだけで見えてくることがあります。<br>
+                    売り込みは一切しません。ヒアリングと整理だけで終わってもOKです。
+                </p>
+
+                <!-- Steps -->
+                <div style="display:flex; gap:0; max-width:600px; margin:0 auto 40px; text-align:left;">
+                    <div style="flex:1; padding:20px 24px; border-right:1px solid rgba(255,255,255,0.15);">
+                        <p style="font-size:0.7rem; letter-spacing:0.15em; color:var(--c-accent); font-weight:700; margin-bottom:6px;">STEP 01</p>
+                        <p style="font-size:0.9rem; font-weight:700; color:#fff;">フォームから申し込む</p>
+                        <p style="font-size:0.8rem; color:rgba(255,255,255,0.5); margin-top:4px;">3分で完了</p>
+                    </div>
+                    <div style="flex:1; padding:20px 24px; border-right:1px solid rgba(255,255,255,0.15);">
+                        <p style="font-size:0.7rem; letter-spacing:0.15em; color:var(--c-accent); font-weight:700; margin-bottom:6px;">STEP 02</p>
+                        <p style="font-size:0.9rem; font-weight:700; color:#fff;">日程調整（メール）</p>
+                        <p style="font-size:0.8rem; color:rgba(255,255,255,0.5); margin-top:4px;">2営業日以内に返信</p>
+                    </div>
+                    <div style="flex:1; padding:20px 24px;">
+                        <p style="font-size:0.7rem; letter-spacing:0.15em; color:var(--c-accent); font-weight:700; margin-bottom:6px;">STEP 03</p>
+                        <p style="font-size:0.9rem; font-weight:700; color:#fff;">無料相談（30分）</p>
+                        <p style="font-size:0.8rem; color:rgba(255,255,255,0.5); margin-top:4px;">オンライン・対面どちらでも</p>
+                    </div>
+                </div>
+
+                <a href="index.html#contact" class="lp-cta-btn">まず30分だけ話してみる（完全無料・売り込みなし）</a>
+                <p class="lp-cta-note">月2名限定 ／ 1回目終了後まで返金保証 ／ 売り込みなし</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <img src="logo-2line-a.svg" alt="DX Factory" class="footer-logo-img">
+                    </div>
+                    <p class="footer-mission">「仕組み」で企業の生産性を底上げし、<br>次世代へ続く強い事業を作る</p>
+                </div>
+                <div class="footer-nav">
+                    <ul>
+                        <li><a href="index.html#about">当サービスについて</a></li>
+                        <li><a href="index.html#profile">プロフィール</a></li>
+                        <li><a href="index.html#service">提供サービス</a></li>
+                        <li><a href="case.html">事例一覧</a></li>
+                        <li><a href="column.html">コラム一覧</a></li>
+                        <li><a href="index.html#pricing">料金プラン</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <a href="privacy.html">プライバシーポリシー</a>
+                <span class="footer-legal-sep">|</span>
+                <a href="terms.html">事業者情報</a>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 DX Factory. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js?v=20260509b"></script>
+    <button class="back-to-top" id="backToTop" aria-label="ページトップへ戻る">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+</body>
+
+</html>

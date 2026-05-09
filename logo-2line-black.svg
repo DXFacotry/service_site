@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 130" width="300" height="130">
+  <!-- A: DX超大 + Factory やや小・右寄せ（黒バージョン） -->
+  <text x="0" y="78"
+    fill="#0A0A0A"
+    font-family="Inter, Arial Black, sans-serif"
+    font-size="80" font-weight="900" letter-spacing="-3">DX</text>
+  <text x="6" y="118"
+    fill="#0A0A0A"
+    font-family="Inter, Arial, sans-serif"
+    font-size="36" font-weight="700" letter-spacing="6">Factory</text>
+</svg>

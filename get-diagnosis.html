@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DX現在地診断｜あなたの会社は今どの段階？｜DX Factory</title>
+    <meta name="description" content="3分で完了するDX現在地診断シート。デジタル化・DX・AI導入のどの段階にいるかをチェックリストで確認。無料でダウンロード。">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://dxfactory.jp/get-diagnosis.html">
+
+    <!-- OGP -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DX現在地診断｜あなたの会社は今どの段階？">
+    <meta property="og:description" content="3分で完了するDX現在地診断シート。デジタル化・DX・AI導入のどの段階にいるかをチェックリストで確認。無料でダウンロード。">
+    <meta property="og:url" content="https://dxfactory.jp/get-diagnosis.html">
+    <meta property="og:image" content="https://dxfactory.jp/ogp.png">
+    <meta property="og:site_name" content="DX Factory">
+    <meta property="og:locale" content="ja_JP">
+
+    <link rel="stylesheet" href="styles.css?v=20260509c">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YX2EHT3J3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8YX2EHT3J3');
+    </script>
+
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "wmq5mzaexq");
+    </script>
+
+    <style>
+        .lead-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .lead-hero {
+            background: var(--c-black);
+            color: #fff;
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+        .lead-hero .label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--c-accent);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .lead-hero h1 {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 900;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+        .lead-hero h1 em {
+            font-style: normal;
+            color: var(--c-accent);
+        }
+        .lead-hero p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.75);
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        .lead-body {
+            flex: 1;
+            background: #f8f8f6;
+            padding: 56px 24px 80px;
+        }
+        .lead-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 48px 40px;
+        }
+        @media (max-width: 600px) {
+            .lead-card { padding: 32px 24px; }
+        }
+        .lead-card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .lead-card-sub {
+            font-size: 0.875rem;
+            color: #888;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .lead-benefits {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .lead-benefits li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .lead-benefits li::before {
+            content: "✓";
+            color: var(--c-accent);
+            font-weight: 900;
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .lead-form .form-row {
+            margin-bottom: 16px;
+        }
+        .lead-form .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--c-black);
+        }
+        .lead-form .form-required {
+            color: #e53;
+            font-size: 0.75rem;
+            margin-left: 4px;
+        }
+        .lead-form input[type="text"],
+        .lead-form input[type="email"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        .lead-form input:focus {
+            outline: none;
+            border-color: var(--c-accent);
+        }
+        .lead-form .btn-lead {
+            width: 100%;
+            display: block;
+            background: var(--c-accent);
+            color: var(--c-black);
+            border: none;
+            border-radius: 8px;
+            padding: 18px 24px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: all 0.3s;
+            margin-top: 24px;
+        }
+        .lead-form .btn-lead:hover {
+            background: #ffe566;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255,222,89,0.35);
+        }
+        .lead-note {
+            font-size: 0.78rem;
+            color: #999;
+            text-align: center;
+            margin-top: 16px;
+            line-height: 1.6;
+        }
+        .lead-divider {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 28px 0;
+        }
+        .lead-trust {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .lead-trust span {
+            font-size: 0.8rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+
+<body class="lead-page">
+    <header class="header scrolled">
+        <div class="header-inner">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo-2line-black.svg" alt="DX Factory" class="logo-img">
+                </a>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html#about" style="color:var(--c-black);">当サービスについて</a></li>
+                    <li><a href="index.html#service" style="color:var(--c-black);">提供サービス</a></li>
+                    <li><a href="case.html" style="color:var(--c-black);">事例</a></li>
+                    <li><a href="column.html" style="color:var(--c-black);">コラム</a></li>
+                </ul>
+                <a href="index.html#contact" class="btn btn-header">30分で現状を整理する（無料）</a>
+            </nav>
+            <div class="hamburger" aria-label="メニューを開く" role="button" tabindex="0">
+                <span style="background:var(--c-black);"></span>
+                <span style="background:var(--c-black);"></span>
+                <span style="background:var(--c-black);"></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="lead-hero">
+            <p class="label">無料診断シート</p>
+            <h1>あなたの会社の<br><em>DX現在地</em>、3分でわかります。</h1>
+            <p>まず、自分の会社が今どこにいるかを把握する。<br>それがDXの第一歩です。</p>
+        </div>
+
+        <div class="lead-body">
+            <div class="lead-card">
+                <p class="lead-card-title">📋 受け取れる内容</p>
+                <p class="lead-card-sub">「現在地診断チェックリスト」（全15問）</p>
+
+                <ul class="lead-benefits">
+                    <li>デジタル化・DX・AI導入の3段階を15問でセルフ診断</li>
+                    <li>「今の段階」と「次にやるべきこと」が明確になる</li>
+                    <li>印刷してチームで共有もできる</li>
+                    <li>送信後すぐに表示されます（メール不要）</li>
+                </ul>
+
+                <hr class="lead-divider">
+
+                <form class="lead-form" method="POST" action="https://formspree.io/f/mgodnnjo">
+                    <input type="hidden" name="_subject" value="【診断DL】現在地診断リクエスト">
+                    <input type="hidden" name="_next" value="https://dxfactory.jp/diagnosis.html">
+                    <!-- honeypot（スパム対策） -->
+                    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+                    <div class="form-row">
+                        <label for="diag-company" class="form-label">貴社名（任意）</label>
+                        <input type="text" id="diag-company" name="company" placeholder="例：株式会社〇〇">
+                    </div>
+                    <div class="form-row">
+                        <label for="diag-name" class="form-label">お名前 <span class="form-required">必須</span></label>
+                        <input type="text" id="diag-name" name="name" placeholder="例：山田 太郎" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="diag-email" class="form-label">メールアドレス <span class="form-required">必須</span></label>
+                        <input type="email" id="diag-email" name="email" placeholder="例：info@example.com" required>
+                    </div>
+
+                    <button type="submit" class="btn-lead">診断シートを受け取る（無料）→</button>
+                </form>
+
+                <p class="lead-note">
+                    送信後すぐに診断シートが表示されます。<br>
+                    営業電話・しつこいメールは一切しません。
+                </p>
+
+                <hr class="lead-divider">
+
+                <div class="lead-trust">
+                    <span>✓ 完全無料</span>
+                    <span>✓ 所要3分</span>
+                    <span>✓ 印刷OK</span>
+                    <span>✓ 個人情報は適切に管理</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <img src="logo-2line-a.svg" alt="DX Factory" class="footer-logo-img">
+                    </div>
+                    <p class="footer-mission">「仕組み」で企業の生産性を底上げし、<br>次世代へ続く強い事業を作る</p>
+                </div>
+                <div class="footer-nav">
+                    <ul>
+                        <li><a href="index.html#about">当サービスについて</a></li>
+                        <li><a href="index.html#service">提供サービス</a></li>
+                        <li><a href="case.html">事例一覧</a></li>
+                        <li><a href="column.html">コラム一覧</a></li>
+                        <li><a href="index.html#pricing">料金プラン</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <a href="privacy.html">プライバシーポリシー</a>
+                <span class="footer-legal-sep">|</span>
+                <a href="terms.html">事業者情報</a>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 DX Factory. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js?v=20260509c"></script>
+</body>
+
+</html>
