@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DX現在地診断シート｜DX Factory</title>
+    <meta name="description" content="DX現在地診断チェックリスト。デジタル化・DX・AI導入の3段階を15問でセルフ診断。">
+    <!-- 検索エンジンにインデックスさせない（登録者限定コンテンツ） -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="stylesheet" href="styles.css?v=20260509c">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YX2EHT3J3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8YX2EHT3J3');
+        // リード獲得コンバージョンイベント
+        gtag('event', 'lead_diagnosis_dl', {
+            'event_category': 'lead',
+            'event_label': 'diagnosis_page_view'
+        });
+    </script>
+
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "wmq5mzaexq");
+    </script>
+
+    <style>
+        /* ===== 診断ページ専用スタイル ===== */
+        .diag-page {
+            background: #f8f8f6;
+        }
+        .diag-header {
+            background: var(--c-black);
+            color: #fff;
+            padding: 40px 24px 32px;
+            text-align: center;
+        }
+        .diag-header .label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--c-accent);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .diag-header h1 {
+            font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+            font-weight: 900;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+        .diag-header p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .diag-body {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+        /* ステージカード */
+        .diag-stage {
+            background: #fff;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .diag-stage-head {
+            padding: 20px 28px 16px;
+            border-bottom: 2px solid #f0f0ee;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .diag-stage-num {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--c-accent);
+            font-family: 'Inter', sans-serif;
+            line-height: 1;
+        }
+        .diag-stage-info {}
+        .diag-stage-name {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--c-black);
+            margin-bottom: 2px;
+        }
+        .diag-stage-desc {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        .diag-checks {
+            padding: 8px 28px 20px;
+        }
+        .diag-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f3;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .diag-check:last-child {
+            border-bottom: none;
+        }
+        .diag-check:hover {
+            background: #fffdf0;
+            margin: 0 -28px;
+            padding-left: 28px;
+            padding-right: 28px;
+        }
+        .diag-check input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--c-black);
+            flex-shrink: 0;
+            margin-top: 1px;
+            cursor: pointer;
+        }
+        .diag-check label {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--c-black);
+            cursor: pointer;
+        }
+
+        /* 判定結果エリア */
+        .diag-result {
+            display: none;
+            background: var(--c-black);
+            color: #fff;
+            border-radius: 12px;
+            padding: 40px 32px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .diag-result.visible {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .diag-result-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--c-accent);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .diag-result-stage {
+            font-size: clamp(1.2rem, 3vw, 1.7rem);
+            font-weight: 900;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+        .diag-result-msg {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 28px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .diag-result-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        .diag-result-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .diag-result-link.primary {
+            background: var(--c-accent);
+            color: var(--c-black);
+        }
+        .diag-result-link.primary:hover {
+            background: #ffe566;
+            transform: translateY(-2px);
+        }
+        .diag-result-link.secondary {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .diag-result-link.secondary:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* 判定ガイド（印刷時のみ表示） */
+        .diag-guide {
+            background: #fff;
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            display: none;
+        }
+        .diag-guide h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--c-black);
+        }
+        .diag-guide-row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px 16px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .diag-guide-row:last-child { border-bottom: none; margin-bottom: 0; }
+        .diag-guide-stage { font-weight: 700; white-space: nowrap; }
+
+        /* CTA */
+        .diag-cta {
+            background: #fff;
+            border-radius: 12px;
+            padding: 40px 32px;
+            text-align: center;
+            margin-bottom: 24px;
+            border: 2px solid var(--c-accent);
+        }
+        .diag-cta p {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .diag-cta .sub {
+            font-size: 0.875rem;
+            color: #888;
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+        .diag-cta .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--c-black);
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 1rem;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: all 0.3s;
+        }
+        .diag-cta .btn-cta:hover {
+            background: #222;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        /* 印刷ボタン */
+        .diag-print {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .diag-print button {
+            background: none;
+            border: 1.5px solid #ccc;
+            border-radius: 6px;
+            padding: 10px 24px;
+            font-size: 0.875rem;
+            font-family: inherit;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .diag-print button:hover {
+            border-color: var(--c-black);
+            color: var(--c-black);
+        }
+
+        /* ===== 印刷スタイル ===== */
+        @media print {
+            .header, .diag-cta, .diag-print, .diag-result, .no-print {
+                display: none !important;
+            }
+            .diag-guide {
+                display: block !important;
+            }
+            .diag-page { background: #fff; }
+            .diag-header {
+                background: #fff;
+                color: #000;
+                border-bottom: 2px solid #000;
+                padding: 20px 0;
+            }
+            .diag-header .label { color: #000; }
+            .diag-header h1 { font-size: 1.3rem; }
+            .diag-body { padding: 20px 0; }
+            .diag-stage { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+            .diag-stage-num { color: #000; }
+            .diag-check:hover { background: none; margin: 0; padding: 12px 0; }
+            .diag-check input[type="checkbox"] {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 18px;
+                height: 18px;
+                border: 1.5px solid #333;
+                border-radius: 3px;
+                background: #fff;
+            }
+        }
+    </style>
+</head>
+
+<body class="diag-page">
+    <!-- 直接URLアクセス時は登録ページへリダイレクト -->
+    <script>
+        (function() {
+            var ref = document.referrer;
+            if (ref === '' || (!ref.includes('formspree.io') && !ref.includes('dxfactory.jp') && !ref.includes('localhost'))) {
+                window.location.href = '/get-diagnosis.html';
+            }
+        })();
+    </script>
+
+    <header class="header scrolled no-print">
+        <div class="header-inner">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo-2line-black.svg" alt="DX Factory" class="logo-img">
+                </a>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html#about" style="color:var(--c-black);">当サービスについて</a></li>
+                    <li><a href="index.html#service" style="color:var(--c-black);">提供サービス</a></li>
+                    <li><a href="case.html" style="color:var(--c-black);">事例</a></li>
+                    <li><a href="column.html" style="color:var(--c-black);">コラム</a></li>
+                </ul>
+                <a href="index.html#contact" class="btn btn-header">30分で現状を整理する（無料）</a>
+            </nav>
+            <div class="hamburger" aria-label="メニューを開く" role="button" tabindex="0">
+                <span style="background:var(--c-black);"></span>
+                <span style="background:var(--c-black);"></span>
+                <span style="background:var(--c-black);"></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="diag-header">
+        <p class="label">DX現在地診断シート</p>
+        <h1>あなたの会社は今どの段階？</h1>
+        <p>15問にチェックを入れると、現在地と次のステップが自動で判定されます</p>
+    </div>
+
+    <main class="diag-body">
+
+        <!-- ① 判定結果（JS自動更新） -->
+        <div class="diag-result" id="result-area">
+            <p class="diag-result-label">診断結果</p>
+            <p class="diag-result-stage" id="result-stage"></p>
+            <p class="diag-result-msg" id="result-msg"></p>
+            <div class="diag-result-links">
+                <a href="#" id="result-next" class="diag-result-link secondary"></a>
+                <a href="index.html#contact" class="diag-result-link primary">30分無料相談を予約する →</a>
+            </div>
+        </div>
+
+        <!-- STAGE 01 -->
+        <div class="diag-stage">
+            <div class="diag-stage-head">
+                <div class="diag-stage-num">01</div>
+                <div class="diag-stage-info">
+                    <div class="diag-stage-name">デジタル化</div>
+                    <div class="diag-stage-desc">情報をデジタルに置き換える段階</div>
+                </div>
+            </div>
+            <div class="diag-checks">
+                <div class="diag-check">
+                    <input type="checkbox" class="stage1" id="q1">
+                    <label for="q1">業務情報（受注・在庫・顧客など）を紙や口頭で管理している</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage1" id="q2">
+                    <label for="q2">ExcelやGoogleスプレッドシートを使っているが、担当者しか見られない</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage1" id="q3">
+                    <label for="q3">「あのデータどこにある？」が頻繁に起きる</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage1" id="q4">
+                    <label for="q4">新人への業務引き継ぎに毎回1から口頭説明が必要</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage1" id="q5">
+                    <label for="q5">同じ情報を複数の場所に手で入力し直している</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- STAGE 02 -->
+        <div class="diag-stage">
+            <div class="diag-stage-head">
+                <div class="diag-stage-num">02</div>
+                <div class="diag-stage-info">
+                    <div class="diag-stage-name">DX（自動化）</div>
+                    <div class="diag-stage-desc">業務フローを自動化する段階</div>
+                </div>
+            </div>
+            <div class="diag-checks">
+                <div class="diag-check">
+                    <input type="checkbox" class="stage2" id="q6">
+                    <label for="q6">スプレッドシートのデータを別のシート・システムにコピペで転記している</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage2" id="q7">
+                    <label for="q7">集計・レポート作成に毎月2時間以上かかっている</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage2" id="q8">
+                    <label for="q8">問い合わせ対応・確認メール・通知などを毎回手動でやっている</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage2" id="q9">
+                    <label for="q9">承認フロー（申請→確認→許可）がメールや口頭で行われている</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage2" id="q10">
+                    <label for="q10">複数のツール・システム間のデータが連携されていない</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- STAGE 03 -->
+        <div class="diag-stage">
+            <div class="diag-stage-head">
+                <div class="diag-stage-num">03</div>
+                <div class="diag-stage-info">
+                    <div class="diag-stage-name">AI導入・AX</div>
+                    <div class="diag-stage-desc">AI活用から経営変革へ</div>
+                </div>
+            </div>
+            <div class="diag-checks">
+                <div class="diag-check">
+                    <input type="checkbox" class="stage3" id="q11">
+                    <label for="q11">ChatGPTやClaudeを試しているが、個人の試行錯誤止まりで社内に広がっていない</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage3" id="q12">
+                    <label for="q12">AIを使える人と使えない人で業務の質・速さに差が出てきている</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage3" id="q13">
+                    <label for="q13">経営判断にデータをほとんど活用できていない</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage3" id="q14">
+                    <label for="q14">「AI活用の全社方針」が決まっていない</label>
+                </div>
+                <div class="diag-check">
+                    <input type="checkbox" class="stage3" id="q15">
+                    <label for="q15">社長がいなくても回る仕組みを本気で構築したい</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 判定ガイド（印刷時のみ表示） -->
+        <div class="diag-guide">
+            <h3>📊 判定ガイド</h3>
+            <div class="diag-guide-row">
+                <span class="diag-guide-stage">STAGE 01 デジタル化</span>
+                <span>問1〜5のうち2つ以上チェックがある方。情報をデジタルに置き換えるところから始めましょう。</span>
+            </div>
+            <div class="diag-guide-row">
+                <span class="diag-guide-stage">STAGE 02 DX（自動化）</span>
+                <span>問1〜5はほぼクリア、問6〜10に2つ以上チェックがある方。繰り返し作業をGASで自動化する段階です。</span>
+            </div>
+            <div class="diag-guide-row">
+                <span class="diag-guide-stage">STAGE 03 AI導入・AX</span>
+                <span>問1〜10はほぼクリア、問11〜15にチェックがある方。AIを現場に定着させ、経営変革へ進む段階です。</span>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="diag-cta no-print">
+            <p>「うちは今どの段階？」——まずは無料30分でお聞きします。</p>
+            <p class="sub">チェック結果を持参いただければ、より具体的なアドバイスが可能です。</p>
+            <a href="index.html#contact" class="btn-cta">30分無料相談を予約する →</a>
+        </div>
+
+        <!-- 印刷ボタン -->
+        <div class="diag-print no-print">
+            <button onclick="window.print()">🖨️ このシートを印刷する（PDF保存も可）</button>
+        </div>
+
+    </main>
+
+    <footer class="footer no-print">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <img src="logo-2line-a.svg" alt="DX Factory" class="footer-logo-img">
+                    </div>
+                    <p class="footer-mission">「仕組み」で企業の生産性を底上げし、<br>次世代へ続く強い事業を作る</p>
+                </div>
+                <div class="footer-nav">
+                    <ul>
+                        <li><a href="index.html#about">当サービスについて</a></li>
+                        <li><a href="index.html#service">提供サービス</a></li>
+                        <li><a href="case.html">事例一覧</a></li>
+                        <li><a href="column.html">コラム一覧</a></li>
+                        <li><a href="index.html#pricing">料金プラン</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <a href="privacy.html">プライバシーポリシー</a>
+                <span class="footer-legal-sep">|</span>
+                <a href="terms.html">事業者情報</a>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 DX Factory. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js?v=20260509c"></script>
+    <script>
+        // ===== JS自動判定 =====
+        var resultArea = document.getElementById('result-area');
+        var resultStage = document.getElementById('result-stage');
+        var resultMsg = document.getElementById('result-msg');
+        var resultNext = document.getElementById('result-next');
+
+        function judgeStage() {
+            var s1 = document.querySelectorAll('.stage1:checked').length;
+            var s2 = document.querySelectorAll('.stage2:checked').length;
+            var s3 = document.querySelectorAll('.stage3:checked').length;
+            var total = s1 + s2 + s3;
+
+            if (total === 0) {
+                resultArea.classList.remove('visible');
+                return;
+            }
+
+            var stage, msg, nextLabel, nextHref;
+
+            if (s1 >= 2) {
+                stage = 'STAGE 01：デジタル化が先決です';
+                msg = '情報をデジタルに置き換えるところから始めましょう。まずは「誰でも見える状態」をつくることが全ての出発点。AIより先にやることがあります。';
+                nextLabel = 'Excel脱却の事例を見る →';
+                nextHref = 'column-001.html';
+            } else if (s2 >= 2) {
+                stage = 'STAGE 02：自動化で時間を取り戻す段階です';
+                msg = '情報は整っています。次は繰り返し作業をGASで自動化し、社員が本来の仕事に集中できる状態をつくりましょう。';
+                nextLabel = '自動化の事例を見る →';
+                nextHref = 'case.html';
+            } else {
+                stage = 'STAGE 03：AI・AXで経営変革へ進む段階です';
+                msg = '業務基盤は整っています。AIを現場に定着させ、経営判断にデータを活かす段階です。まず全社AI方針を設計しましょう。';
+                nextLabel = 'AIハンズオンを見る →';
+                nextHref = 'ai-handson.html';
+            }
+
+            resultStage.textContent = stage;
+            resultMsg.textContent = msg;
+            resultNext.textContent = nextLabel;
+            resultNext.href = nextHref;
+            resultArea.classList.add('visible');
+
+            // 結果エリアにスクロール（初回のみ）
+            if (!resultArea.dataset.scrolled) {
+                resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                resultArea.dataset.scrolled = '1';
+            }
+        }
+
+        // 全チェックボックスにイベントを設定
+        document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+            cb.addEventListener('change', judgeStage);
+        });
+    </script>
+</body>
+
+</html>
