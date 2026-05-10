@@ -95,6 +95,26 @@ ul {
     line-height: 1;
 }
 
+/* H2サブタイトル（SEOキーワード補完・視覚的にも意味を補強） */
+.section-title-jp {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--c-text-light, #555);
+    letter-spacing: 0.05em;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .section-title-jp {
+        font-size: 0.85rem;
+        margin-top: 10px;
+        padding: 0 16px;
+    }
+}
+
 .section-intro {
     text-align: center;
     margin-bottom: 80px;

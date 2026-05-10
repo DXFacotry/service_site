@@ -24,8 +24,8 @@
     <meta name="twitter:description" content="いきなりAIの前に、やることがあります。デジタル化→DX→AI導入・AXの3段階を一気通貫で設計・実装。100名未満の中小企業経営者に伴走。無料30分相談受付中。">
     <meta name="twitter:image" content="https://dxfactory.jp/ogp.png">
 
-    <link rel="stylesheet" href="styles.css?v=20260509c">
-    <link rel="preload" as="image" href="hero-bg.png">
+    <link rel="stylesheet" href="styles.css?v=20260510">
+    <link rel="preload" as="image" href="hero-bg.webp" type="image/webp">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,6 +51,66 @@
             "jobTitle": "代表 / 業務設計・改善コンサルタント"
           },
           "serviceType": ["業務改善", "DX支援", "業務自動化", "経営コンサルティング"]
+        },
+        {
+          "@type": "Service",
+          "@id": "https://dxfactory.jp/#service-discover",
+          "name": "DISCOVER｜業務整理・現状診断プラン",
+          "serviceType": "業務改善コンサルティング",
+          "provider": { "@id": "https://dxfactory.jp/" },
+          "areaServed": ["北海道", "帯広市", "十勝", "日本"],
+          "description": "課題整理と業務フローの言語化、改善方針の策定までを行う初期診断プラン。「何から手をつければいいか分からない」中小企業経営者向け。",
+          "offers": {
+            "@type": "Offer",
+            "price": "50000",
+            "priceCurrency": "JPY",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "price": "50000",
+              "priceCurrency": "JPY",
+              "description": "5万円〜（規模・スコープにより変動）"
+            }
+          }
+        },
+        {
+          "@type": "Service",
+          "@id": "https://dxfactory.jp/#service-design",
+          "name": "DESIGN｜業務自動化・DX設計プラン",
+          "serviceType": "DX設計・業務自動化",
+          "provider": { "@id": "https://dxfactory.jp/" },
+          "areaServed": ["北海道", "帯広市", "十勝", "日本"],
+          "description": "Google Workspace・GAS・Notion等を活用した業務フロー再設計と自動化実装。「つくらないDX」で現場が使いこなせる仕組みを構築。",
+          "offers": {
+            "@type": "Offer",
+            "price": "300000",
+            "priceCurrency": "JPY",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "price": "300000",
+              "priceCurrency": "JPY",
+              "description": "30万円〜（規模・スコープにより変動）"
+            }
+          }
+        },
+        {
+          "@type": "Service",
+          "@id": "https://dxfactory.jp/#service-drive",
+          "name": "DRIVE｜継続伴走・AI活用顧問プラン",
+          "serviceType": "DX顧問・AI活用支援",
+          "provider": { "@id": "https://dxfactory.jp/" },
+          "areaServed": ["北海道", "帯広市", "十勝", "日本"],
+          "description": "月1回の定例会、ツール保守、改善提案を行う顧問契約。ChatGPT・Claudeなど生成AIの業務組み込みも支援し、自走する組織を作る。",
+          "offers": {
+            "@type": "Offer",
+            "price": "100000",
+            "priceCurrency": "JPY",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "price": "100000",
+              "priceCurrency": "JPY",
+              "description": "10万円〜 / 月（顧問契約）"
+            }
+          }
         },
         {
           "@type": "FAQPage",
@@ -135,7 +195,10 @@
     <main>
         <section class="hero">
             <div class="hero-bg">
-                <img src="hero-bg.png" alt="DX Factory Abstract Background" loading="eager">
+                <picture>
+                    <source srcset="hero-bg.webp" type="image/webp">
+                    <img src="hero-bg.png" alt="DX Factory Abstract Background" loading="eager">
+                </picture>
                 <div class="hero-overlay"></div>
             </div>
             <div class="container hero-content">
@@ -178,7 +241,7 @@
 
         <section class="section about" id="about">
             <div class="container">
-                <h2 class="section-title">CONCEPT</h2>
+                <h2 class="section-title">CONCEPT <span class="section-title-jp">提供価値・コンセプト</span></h2>
                 <div class="section-divider"></div>
                 <div class="about-content">
                     <p class="about-lead">単なるツール作成にとどまらず、<br>「運用が回り、利益が出る状態」まで。</p>
@@ -263,7 +326,7 @@
         <!-- 3段階モデル（STAGES） -->
         <section class="section feature" id="stages">
             <div class="container">
-                <h2 class="section-title">STAGES</h2>
+                <h2 class="section-title">STAGES <span class="section-title-jp">3段階モデル｜デジタル化・DX・AI導入</span></h2>
                 <div class="section-divider"></div>
                 <div class="section-intro">
                     <p>順番が大事です。段階を飛ばすと、AIは現場に定着しません。<br>DX Factoryは「土台→自動化→AI活用」を順番に積み上げます。</p>
@@ -310,7 +373,7 @@
 
         <section class="section service" id="service">
             <div class="container">
-                <h2 class="section-title">SERVICE</h2>
+                <h2 class="section-title">SERVICE <span class="section-title-jp">提供サービス｜業務改善・DX伴走支援</span></h2>
                 <div class="section-divider"></div>
                 <div class="section-intro">
                     <p>単なるツール作成にとどまらず、<br>「運用が回り、利益が出る状態」までサポートします。</p>
@@ -319,8 +382,10 @@
                 <div class="service-steps">
                     <div class="step-card fade-in-up">
                         <div class="step-image">
-                            <img src="service-01.png"
-                                alt="業務の整理・体系化" loading="lazy">
+                            <picture>
+                                <source srcset="service-01.webp" type="image/webp">
+                                <img src="service-01.png" alt="業務の整理・体系化" loading="lazy">
+                            </picture>
                         </div>
                         <div class="step-content">
                             <h3 class="step-name"><span class="step-label">SERVICE 01</span>業務の整理・体系化</h3>
@@ -331,8 +396,10 @@
 
                     <div class="step-card reverse fade-in-up">
                         <div class="step-image">
-                            <img src="service-02.png"
-                                alt="オリジナルツール構築" loading="lazy">
+                            <picture>
+                                <source srcset="service-02.webp" type="image/webp">
+                                <img src="service-02.png" alt="オリジナルツール構築" loading="lazy">
+                            </picture>
                         </div>
                         <div class="step-content">
                             <h3 class="step-name"><span class="step-label">SERVICE 02</span>既存ツールの活用・仕組み化</h3>
@@ -342,8 +409,10 @@
 
                     <div class="step-card fade-in-up">
                         <div class="step-image">
-                            <img src="service-03.png"
-                                alt="外部ツール導入・連携支援" loading="lazy">
+                            <picture>
+                                <source srcset="service-03.webp" type="image/webp">
+                                <img src="service-03.png" alt="外部ツール導入・連携支援" loading="lazy">
+                            </picture>
                         </div>
                         <div class="step-content">
                             <h3 class="step-name"><span class="step-label">SERVICE 03</span>外部ツール導入・連携支援</h3>
@@ -377,7 +446,7 @@
 
         <section class="section results" id="results">
             <div class="container">
-                <h2 class="section-title">CASE</h2>
+                <h2 class="section-title">CASE <span class="section-title-jp">中小企業の業務改善・自動化事例</span></h2>
                 <div class="section-divider"></div>
                 <div class="section-intro">
                     <p>実際の支援事例と、お客様の声。</p>
@@ -575,7 +644,7 @@
 
         <section class="section tools bg-gray" id="tools">
             <div class="container">
-                <h2 class="section-title">TOOLS</h2>
+                <h2 class="section-title">TOOLS <span class="section-title-jp">対応可能ツール｜Google Workspace / GAS / Notion 他</span></h2>
                 <div class="section-divider"></div>
                 <div class="section-intro">
                     <p>対応可能ツール</p>
@@ -695,7 +764,7 @@
 
         <section class="section pricing bg-gray" id="pricing">
             <div class="container">
-                <h2 class="section-title">PLANS</h2>
+                <h2 class="section-title">PLANS <span class="section-title-jp">料金プラン｜中小企業向けDX支援費用</span></h2>
                 <div class="section-divider"></div>
                 <div class="section-intro">
                     <p>企業の課題とご予算に応じた3つのステージ</p>
@@ -794,11 +863,14 @@
 
         <section class="section profile" id="profile">
             <div class="container">
-                <h2 class="section-title">PROFILE</h2>
+                <h2 class="section-title">PROFILE <span class="section-title-jp">代表プロフィール｜業務設計コンサルタント 柳健太郎</span></h2>
                 <div class="section-divider"></div>
                 <div class="profile-card">
                     <div class="profile-img-wrap">
-                        <img src="profile.jpg" alt="柳 健太郎 プロフィール写真" loading="lazy">
+                        <picture>
+                            <source srcset="profile.webp" type="image/webp">
+                            <img src="profile.jpg" alt="柳 健太郎 プロフィール写真" loading="lazy">
+                        </picture>
                     </div>
                     <div class="profile-info">
                         <h3 class="profile-name">
@@ -817,7 +889,7 @@
         <!-- Column / Articles Section -->
         <section class="section column-section bg-gray" id="column">
             <div class="container">
-                <h2 class="section-title">COLUMN</h2>
+                <h2 class="section-title">COLUMN <span class="section-title-jp">DX・AI活用コラム</span></h2>
                 <div class="section-divider"></div>
                 <div class="section-intro">
                     <p>DX・AI活用に関するコラム・事例紹介</p>
@@ -880,7 +952,7 @@
 
         <section class="section faq" id="faq">
             <div class="container">
-                <h2 class="section-title">FAQ</h2>
+                <h2 class="section-title">FAQ <span class="section-title-jp">よくあるご質問</span></h2>
                 <div class="section-divider"></div>
                 <div class="section-intro">
                     <p>よくいただくご質問</p>
@@ -1020,7 +1092,7 @@
         <a href="#contact" class="sticky-cta-btn">30分で現状を整理する（無料）→</a>
     </div>
 
-    <script src="main.js?v=20260509c"></script>
+    <script src="main.js?v=20260510"></script>
 
     <button class="back-to-top" id="backToTop" aria-label="ページトップへ戻る">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
