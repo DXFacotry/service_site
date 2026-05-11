@@ -1,6 +1,11 @@
 User-agent: *
 Allow: /
+# 配信されない管理画面と診断結果ダウンロードページ（拡張子あり/なし両方ブロック）
+Disallow: /admin
 Disallow: /admin.html
+Disallow: /diagnosis
 Disallow: /diagnosis.html
+Disallow: /success
+Disallow: /success.html
 
 Sitemap: https://dxfactory.jp/sitemap.xml

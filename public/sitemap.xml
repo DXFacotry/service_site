@@ -2,49 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://dxfactory.jp/</loc>
-    <lastmod>2026-05-06</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://dxfactory.jp/case.html</loc>
-    <lastmod>2026-05-06</lastmod>
+    <loc>https://dxfactory.jp/case</loc>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dxfactory.jp/column.html</loc>
-    <lastmod>2026-05-06</lastmod>
+    <loc>https://dxfactory.jp/column</loc>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dxfactory.jp/column-001.html</loc>
-    <lastmod>2026-05-06</lastmod>
+    <loc>https://dxfactory.jp/column-001</loc>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://dxfactory.jp/ai-handson.html</loc>
-    <lastmod>2026-05-06</lastmod>
+    <loc>https://dxfactory.jp/column-004</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dxfactory.jp/ai-handson</loc>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dxfactory.jp/get-diagnosis.html</loc>
-    <lastmod>2026-05-09</lastmod>
+    <loc>https://dxfactory.jp/get-diagnosis</loc>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dxfactory.jp/privacy.html</loc>
-    <lastmod>2026-05-06</lastmod>
+    <loc>https://dxfactory.jp/privacy</loc>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://dxfactory.jp/terms.html</loc>
-    <lastmod>2026-05-06</lastmod>
+    <loc>https://dxfactory.jp/terms</loc>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
